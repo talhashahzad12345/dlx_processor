@@ -1,0 +1,113 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use work.dlx_pkg.all;
+
+entity dlx is
+  port (
+    clk : in std_logic;
+    rst : in std_logic;
+
+    ----------------------------------------------------------------
+    -- FETCH control (driven by testbench)
+    ----------------------------------------------------------------
+    fetch_mux_sel   : in std_logic;
+    fetch_jump_addr : in std_logic_vector(PC_WIDTH-1 downto 0);
+
+    ----------------------------------------------------------------
+    -- Writeback interface (driven by testbench or WB stage)
+    ----------------------------------------------------------------
+    wb_we   : in std_logic;
+    wb_addr : in std_logic_vector(REG_ADDR_W-1 downto 0);
+    wb_data : in std_logic_vector(DATA_WIDTH-1 downto 0);
+
+    ----------------------------------------------------------------
+    -- Observation / debug outputs
+    ----------------------------------------------------------------
+    instr_dbg : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    pc_dbg    : out std_logic_vector(PC_WIDTH-1 downto 0);
+
+    ----------------------------------------------------------------
+    -- Decode-stage observable outputs (VERY useful in TB)
+    ----------------------------------------------------------------
+    regA_dbg  : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    regB_dbg  : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    imm_dbg   : out std_logic_vector(DATA_WIDTH-1 downto 0);
+
+    rs_dbg    : out std_logic_vector(REG_ADDR_W-1 downto 0);
+    rt_dbg    : out std_logic_vector(REG_ADDR_W-1 downto 0);
+    rd_dbg    : out std_logic_vector(REG_ADDR_W-1 downto 0);
+
+    RegWrite_dbg : out std_logic;
+    RegDst_dbg   : out std_logic;
+    ALUSrc_dbg   : out std_logic;
+    Branch_dbg   : out std_logic;
+    Jump_dbg     : out std_logic;
+    ALUOp_dbg    : out std_logic_vector(4 downto 0)
+  );
+end entity dlx;
+
+architecture rtl of dlx is
+
+  ------------------------------------------------------------------
+  -- FETCH → DECODE signals
+  ------------------------------------------------------------------
+  signal instr_f : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal pc_f    : std_logic_vector(PC_WIDTH-1 downto 0);
+
+begin
+
+  ------------------------------------------------------------------
+  -- FETCH stage (fully controlled by TB)
+  ------------------------------------------------------------------
+  fetch_inst : entity work.fetch
+    port map (
+      clk       => clk,
+      rst       => rst,
+      mux_sel   => fetch_mux_sel,
+      jump_addr => fetch_jump_addr,
+      addr_out  => pc_f,
+      instr_out => instr_f
+    );
+
+  ------------------------------------------------------------------
+  -- DECODE stage
+  ------------------------------------------------------------------
+  decode_inst : entity work.decode
+    port map (
+      clk       => clk,
+      rst       => rst,
+
+      instr_in  => instr_f,
+      pc_in     => pc_f,
+
+      wb_we     => wb_we,
+      wb_addr   => wb_addr,
+      wb_data   => wb_data,
+
+      regA_out  => regA_dbg,
+      regB_out  => regB_dbg,
+      imm_out   => imm_dbg,
+
+      rs_out    => rs_dbg,
+      rt_out    => rt_dbg,
+      rd_out    => rd_dbg,
+
+      pc_out    => open,
+
+      RegWrite_out => RegWrite_dbg,
+      RegDst_out   => RegDst_dbg,
+      ALUSrc_out   => ALUSrc_dbg,
+      Branch_out   => Branch_dbg,
+      Jump_out     => Jump_dbg,
+      ALUOp_out    => ALUOp_dbg
+    );
+
+  ------------------------------------------------------------------
+  -- Debug taps
+  ------------------------------------------------------------------
+  instr_dbg <= instr_f;
+  pc_dbg    <= pc_f;
+
+end architecture rtl;
