@@ -24,44 +24,44 @@
 # Copying c:/intelfpga_lite/24.1std/questa_fse/win64/../modelsim.ini to modelsim.ini
 # Modifying modelsim.ini
 # 
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/regfile.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/regfile.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:06 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/regfile.vhd 
+# Start time: 04:50:31 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/regfile.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Loading package NUMERIC_STD
 # -- Compiling entity regfile
 # -- Compiling architecture rtl of regfile
-# End time: 02:53:07 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:31 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/imem.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/imem.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:10 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/imem.vhd 
+# Start time: 04:50:31 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/imem.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Loading package altera_mf_components
 # -- Compiling entity imem
 # -- Compiling architecture SYN of imem
-# End time: 02:53:10 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:32 on Feb 22,2026, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/dlx_pkg.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:10 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/dlx_pkg.vhd 
+# Start time: 04:50:32 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Compiling package dlx_pkg
-# End time: 02:53:11 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:32 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/fetch.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/fetch.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:11 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/fetch.vhd 
+# Start time: 04:50:33 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/fetch.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
@@ -70,12 +70,12 @@
 # -- Compiling architecture rtl of fetch
 # -- Loading package altera_mf_components
 # -- Loading entity imem
-# End time: 02:53:11 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:33 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/decode.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/decode.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:12 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/decode.vhd 
+# Start time: 04:50:33 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/decode.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
@@ -84,12 +84,12 @@
 # -- Compiling entity decode
 # -- Compiling architecture rtl of decode
 # -- Loading entity regfile
-# End time: 02:53:12 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:33 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
-# vcom -93 -work work {C:/Users/TS/Desktop/dlx/dlx.vhd}
+# vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/dlx.vhd}
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:12 on Feb 22,2026
-# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx/dlx.vhd 
+# Start time: 04:50:34 on Feb 22,2026
+# vcom -reportprogress 300 -93 -work work C:/Users/TS/Desktop/dlx_processor/dlx.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
@@ -100,22 +100,22 @@
 # -- Loading entity fetch
 # -- Loading entity decode
 # ** Error: (vcom-11) Could not find work.execute.
-# ** Error (suppressible): C:/Users/TS/Desktop/dlx/dlx.vhd(116): (vcom-1195) Cannot find expanded name "work.execute".
-# ** Error: C:/Users/TS/Desktop/dlx/dlx.vhd(116): Unknown expanded name.
+# ** Error (suppressible): C:/Users/TS/Desktop/dlx_processor/dlx.vhd(116): (vcom-1195) Cannot find expanded name "work.execute".
+# ** Error: C:/Users/TS/Desktop/dlx_processor/dlx.vhd(116): Unknown expanded name.
 # ** Error: (vcom-11) Could not find work.memory.
-# ** Error (suppressible): C:/Users/TS/Desktop/dlx/dlx.vhd(147): (vcom-1195) Cannot find expanded name "work.memory".
-# ** Error: C:/Users/TS/Desktop/dlx/dlx.vhd(147): Unknown expanded name.
+# ** Error (suppressible): C:/Users/TS/Desktop/dlx_processor/dlx.vhd(147): (vcom-1195) Cannot find expanded name "work.memory".
+# ** Error: C:/Users/TS/Desktop/dlx_processor/dlx.vhd(147): Unknown expanded name.
 # ** Error: (vcom-11) Could not find work.writeback.
-# ** Error (suppressible): C:/Users/TS/Desktop/dlx/dlx.vhd(166): (vcom-1195) Cannot find expanded name "work.writeback".
-# ** Error: C:/Users/TS/Desktop/dlx/dlx.vhd(166): Unknown expanded name.
-# ** Note: C:/Users/TS/Desktop/dlx/dlx.vhd(178): VHDL Compiler exiting
-# End time: 02:53:12 on Feb 22,2026, Elapsed time: 0:00:00
+# ** Error (suppressible): C:/Users/TS/Desktop/dlx_processor/dlx.vhd(166): (vcom-1195) Cannot find expanded name "work.writeback".
+# ** Error: C:/Users/TS/Desktop/dlx_processor/dlx.vhd(166): Unknown expanded name.
+# ** Note: C:/Users/TS/Desktop/dlx_processor/dlx.vhd(178): VHDL Compiler exiting
+# End time: 04:50:34 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 9, Warnings: 0
 # ** Error: c:/intelfpga_lite/24.1std/questa_fse/win64/vcom failed.
 # Error in macro ./dlx_run_msim_rtl_vhdl.do line 13
 # c:/intelfpga_lite/24.1std/questa_fse/win64/vcom failed.
 #     while executing
-# "vcom -93 -work work {C:/Users/TS/Desktop/dlx/dlx.vhd}"
+# "vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/dlx.vhd}"
 cd ../..
 # reading modelsim.ini
 do sim.do
@@ -123,16 +123,16 @@ do sim.do
 # vmap work work 
 # Modifying modelsim.ini
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:25 on Feb 22,2026
+# Start time: 04:50:44 on Feb 22,2026
 # vcom -reportprogress 300 dlx_pkg.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Compiling package dlx_pkg
-# End time: 02:53:25 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:44 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:25 on Feb 22,2026
+# Start time: 04:50:44 on Feb 22,2026
 # vcom -reportprogress 300 regfile.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -140,10 +140,10 @@ do sim.do
 # -- Loading package NUMERIC_STD
 # -- Compiling entity regfile
 # -- Compiling architecture rtl of regfile
-# End time: 02:53:26 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:44 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:26 on Feb 22,2026
+# Start time: 04:50:45 on Feb 22,2026
 # vcom -reportprogress 300 imem.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -151,10 +151,10 @@ do sim.do
 # -- Loading package altera_mf_components
 # -- Compiling entity imem
 # -- Compiling architecture SYN of imem
-# End time: 02:53:26 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:45 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:26 on Feb 22,2026
+# Start time: 04:50:45 on Feb 22,2026
 # vcom -reportprogress 300 fetch.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -164,10 +164,10 @@ do sim.do
 # -- Compiling architecture rtl of fetch
 # -- Loading package altera_mf_components
 # -- Loading entity imem
-# End time: 02:53:27 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:45 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:27 on Feb 22,2026
+# Start time: 04:50:45 on Feb 22,2026
 # vcom -reportprogress 300 decode.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -177,10 +177,10 @@ do sim.do
 # -- Compiling entity decode
 # -- Compiling architecture rtl of decode
 # -- Loading entity regfile
-# End time: 02:53:27 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:46 on Feb 22,2026, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:27 on Feb 22,2026
+# Start time: 04:50:46 on Feb 22,2026
 # vcom -reportprogress 300 execute.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -189,10 +189,10 @@ do sim.do
 # -- Loading package dlx_pkg
 # -- Compiling entity execute
 # -- Compiling architecture rtl of execute
-# End time: 02:53:28 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:46 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:28 on Feb 22,2026
+# Start time: 04:50:46 on Feb 22,2026
 # vcom -reportprogress 300 dmem.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -200,10 +200,10 @@ do sim.do
 # -- Loading package altera_mf_components
 # -- Compiling entity dmem
 # -- Compiling architecture SYN of dmem
-# End time: 02:53:28 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:47 on Feb 22,2026, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:28 on Feb 22,2026
+# Start time: 04:50:47 on Feb 22,2026
 # vcom -reportprogress 300 memory.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -214,10 +214,10 @@ do sim.do
 # -- Compiling architecture rtl of memory
 # -- Loading package altera_mf_components
 # -- Loading entity dmem
-# End time: 02:53:29 on Feb 22,2026, Elapsed time: 0:00:01
+# End time: 04:50:47 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:29 on Feb 22,2026
+# Start time: 04:50:48 on Feb 22,2026
 # vcom -reportprogress 300 writeBack.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -226,10 +226,10 @@ do sim.do
 # -- Loading package dlx_pkg
 # -- Compiling entity writeback
 # -- Compiling architecture rtl of writeback
-# End time: 02:53:29 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:48 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:29 on Feb 22,2026
+# Start time: 04:50:48 on Feb 22,2026
 # vcom -reportprogress 300 dlx.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -243,10 +243,10 @@ do sim.do
 # -- Loading entity execute
 # -- Loading entity memory
 # -- Loading entity writeback
-# End time: 02:53:29 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:48 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
-# Start time: 02:53:30 on Feb 22,2026
+# Start time: 04:50:49 on Feb 22,2026
 # vcom -reportprogress 300 tb_dlx.vhd 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
@@ -256,10 +256,10 @@ do sim.do
 # -- Compiling architecture sim of tb_dlx
 # -- Loading package dlx_pkg
 # -- Loading entity dlx
-# End time: 02:53:30 on Feb 22,2026, Elapsed time: 0:00:00
+# End time: 04:50:49 on Feb 22,2026, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # vsim -voptargs="+acc" work.tb_dlx 
-# Start time: 02:53:30 on Feb 22,2026
+# Start time: 04:50:50 on Feb 22,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
 # ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
@@ -286,11 +286,6 @@ do sim.do
 # Loading altera_mf.altsyncram(translated)#2
 # Loading work.writeback(rtl)#1
 add wave -position insertpoint sim:/tb_dlx/dut/fetch_inst/*
-add wave -position insertpoint sim:/tb_dlx/dut/decode_inst/*
-add wave -position insertpoint sim:/tb_dlx/dut/execute_inst/*
-add wave -position insertpoint sim:/tb_dlx/dut/memory_inst/*
-add wave -position insertpoint sim:/tb_dlx/dut/writeback_inst/*
-add wave -position insertpoint sim:/tb_dlx/dut/fetch_inst/imem_inst/*
 add wave -position insertpoint sim:/tb_dlx/dut/decode_inst/rf_inst/*
 run
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
@@ -321,6 +316,5 @@ run
 #    Time: 10 ns  Iteration: 1  Instance: /tb_dlx/dut/memory_inst/dmem_inst/altsyncram_component
 # ** Warning: CONV_INTEGER: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, and it has been converted to 0.
 #    Time: 10 ns  Iteration: 1  Instance: /tb_dlx/dut/memory_inst/dmem_inst/altsyncram_component
-run
-# End time: 04:00:23 on Feb 22,2026, Elapsed time: 1:06:53
+# End time: 05:06:39 on Feb 22,2026, Elapsed time: 0:15:49
 # Errors: 0, Warnings: 15

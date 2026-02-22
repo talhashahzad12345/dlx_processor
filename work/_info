@@ -10,12 +10,12 @@ Z0 !s99 nomlopt
 !i10e 25
 !i10f 100
 cModel Technology
-Z1 dC:/Users/TS/Desktop/dlx
+Z1 dC:/Users/TS/Desktop/dlx_processor
 T_opt
-!s110 1771754014
-VlWLVB73iCU[1bI_4]E2Jf0
+!s110 1771761052
+VYDWHGkeQPbOaIgWoi9D<J1
 04 6 3 work tb_dlx sim 1
-=1-30d16bec57c9-699ad21c-326-70d8
+=1-30d16bec57c9-699aed9b-227-7418
 R0
 !s12f OEM100
 !s12b OEM100
@@ -41,9 +41,9 @@ VaCKOFjXT8==heg@F1l39@0
 !s100 ]^2R<<^7HXzMi8[gQ^jIV2
 Z9 OL;C;2024.3;79
 32
-Z10 !s110 1771754007
+Z10 !s110 1771761046
 !i10b 1
-Z11 !s108 1771754007.000000
+Z11 !s108 1771761045.000000
 Z12 !s90 -reportprogress|300|decode.vhd|
 Z13 !s107 decode.vhd|
 !i113 0
@@ -85,9 +85,9 @@ V@XWM7JTX[SalQi;3cc7C;3
 !s100 Sn[CdNg=QhQ8X?<T?TM[<0
 R9
 32
-Z20 !s110 1771754009
+Z20 !s110 1771761048
 !i10b 1
-Z21 !s108 1771754009.000000
+Z21 !s108 1771761048.000000
 Z22 !s90 -reportprogress|300|dlx.vhd|
 Z23 !s107 dlx.vhd|
 !i113 0
@@ -131,9 +131,9 @@ VD1PnOOb5]<l7h]_IE34R`0
 !s100 A3[nnRn_QPb]SiY_MHSFC1
 R9
 32
-Z29 !s110 1771754005
+Z29 !s110 1771761044
 !i10b 1
-Z30 !s108 1771754005.000000
+Z30 !s108 1771761044.000000
 !s90 -reportprogress|300|dlx_pkg.vhd|
 !s107 dlx_pkg.vhd|
 !i113 0
@@ -153,9 +153,9 @@ V]ka6;UQ_k95cOi^3IfmA<3
 !s100 HJ8H^>:fR0^M<;5LWcV4n0
 R9
 32
-Z36 !s110 1771754008
+Z36 !s110 1771761047
 !i10b 1
-Z37 !s108 1771754008.000000
+Z37 !s108 1771761046.000000
 Z38 !s90 -reportprogress|300|dmem.vhd|
 Z39 !s107 dmem.vhd|
 !i113 0
@@ -195,9 +195,9 @@ VY[7diL2@Y>I955T=O8>EW0
 !s100 ^jQ24_6l22H^VGCQeL@:;3
 R9
 32
-R36
+R10
 !i10b 1
-R11
+R37
 Z44 !s90 -reportprogress|300|execute.vhd|
 Z45 !s107 execute.vhd|
 !i113 0
@@ -215,9 +215,9 @@ VOzU8Ec?ae]PFiGJTNh=XX0
 !s100 ^N^olFZPmJP6k0Ld5B[L;3
 R9
 32
-R36
+R10
 !i10b 1
-R11
+R37
 R44
 R45
 !i113 0
@@ -237,9 +237,9 @@ V6?_0abZjA47Z@LUkMdR^X2
 !s100 ]bM_odz>H`[DA[P=Rcg:Y3
 R9
 32
-R10
+Z49 !s110 1771761045
 !i10b 1
-Z49 !s108 1771754006.000000
+R11
 Z50 !s90 -reportprogress|300|fetch.vhd|
 Z51 !s107 fetch.vhd|
 !i113 0
@@ -258,9 +258,9 @@ VR>H;nPlo<AG;1g?W0oCKM1
 !s100 [XmL>dRVjM9Uzi5KmTKmL3
 R9
 32
-R10
-!i10b 1
 R49
+!i10b 1
+R11
 R50
 R51
 !i113 0
@@ -280,11 +280,11 @@ VT7OfP]jnCJ`U3`m4QD;Ki0
 !s100 QSNImbjVE]hmSW>V4OLA_3
 R9
 32
-Z56 !s110 1771754006
-!i10b 1
 R49
-Z57 !s90 -reportprogress|300|imem.vhd|
-Z58 !s107 imem.vhd|
+!i10b 1
+R11
+Z56 !s90 -reportprogress|300|imem.vhd|
+Z57 !s107 imem.vhd|
 !i113 0
 R14
 Asyn
@@ -299,32 +299,32 @@ VJWAh9>kP[82^[;ECfmiGz2
 !s100 [<B5z^40c02WL5GRcnkc60
 R9
 32
-R56
-!i10b 1
 R49
+!i10b 1
+R11
+R56
 R57
-R58
 !i113 0
 R14
 Ememory
-Z59 w1771748852
+Z58 w1771748852
 R3
 R4
 R5
 R6
 !i122 7
 R1
-Z60 8memory.vhd
-Z61 Fmemory.vhd
+Z59 8memory.vhd
+Z60 Fmemory.vhd
 l0
 L7 1
 VRI7[7X@R2AUZRJLKDFZS30
 !s100 W@H_SKloi[7EPEaeEdI8K3
 R9
 32
-R20
+R36
 !i10b 1
-R37
+Z61 !s108 1771761047.000000
 Z62 !s90 -reportprogress|300|memory.vhd|
 Z63 !s107 memory.vhd|
 !i113 0
@@ -344,9 +344,9 @@ VK4QI2AF<Z>YKzNR4?JfRL2
 !s100 keoL2_N@j:egE=h]gRk121
 R9
 32
-R20
+R36
 !i10b 1
-R37
+R61
 R62
 R63
 !i113 0
@@ -407,9 +407,9 @@ ValY?o9NQMe:2cXCD2Onl:3
 !s100 1gMdz08?W@P5G5eA;34>K1
 R9
 32
-Z72 !s110 1771754010
+Z72 !s110 1771761049
 !i10b 1
-Z73 !s108 1771754010.000000
+Z73 !s108 1771761049.000000
 Z74 !s90 -reportprogress|300|tb_dlx.vhd|
 Z75 !s107 tb_dlx.vhd|
 !i113 0
