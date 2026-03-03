@@ -8,9 +8,10 @@ entity fetch is
         rst         : in  std_logic;
         mux_sel     : in  std_logic; -- 0 = PC+1, 1 = jump
         jump_addr   : in  std_logic_vector(9 downto 0);
+		  pc_enable   : in std_logic;
 
-        addr_out   : out std_logic_vector(9 downto 0); -- PC of instr_out+1
-        instr_out  : out std_logic_vector(31 downto 0)
+        addr_out    : out std_logic_vector(9 downto 0); -- PC of instr_out+1
+        instr_out   : out std_logic_vector(31 downto 0)
     );
 end entity fetch;
 
@@ -48,9 +49,9 @@ begin
         if rising_edge(clk) then
             if rst = '1' then
                 pc_f <= (others => '0');
-            else
-                pc_f <= pc_next;  -- feeds IMEM
-            end if;
+            elsif pc_enable = '1' then
+					pc_f <= pc_next;
+				end if;
         end if;
     end process;
 

@@ -5,10 +5,10 @@ if {[file exists rtl_work]} {
 vlib rtl_work
 vmap work rtl_work
 
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/regfile.vhd}
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/imem.vhd}
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/dlx_pkg.vhd}
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/fetch.vhd}
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/decode.vhd}
-vcom -93 -work work {C:/Users/TS/Desktop/dlx/dlx.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/regfile.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/imem.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/fetch.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/decode.vhd}
+vcom -93 -work work {C:/Users/TS/Desktop/dlx_processor/dlx.vhd}
 

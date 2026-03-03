@@ -7,23 +7,29 @@ use work.dlx_pkg.all;
 entity execute is
   port (
 
-    clk  : in std_logic;
-    rst  : in std_logic;
+    clk  				: in std_logic;
+    rst  				: in std_logic;
 
     -- From DECODE (ID/EX)
-    regA_in     : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    regB_in     : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    imm_in      : in std_logic_vector(DATA_WIDTH-1 downto 0);
-    rd_in       : in std_logic_vector(REG_ADDR_W-1 downto 0);
-    pc_in       : in std_logic_vector(PC_WIDTH-1 downto 0);
+    regA_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+    regB_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+    imm_in      		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+    rd_in       		: in std_logic_vector(REG_ADDR_W-1 downto 0);
+    pc_in       		: in std_logic_vector(PC_WIDTH-1 downto 0);
 
-    RegWrite_in : in std_logic;
-    ALUSrc_in   : in std_logic;
-    Branch_in   : in std_logic;
-    Jump_in     : in std_logic;
-    ALUOp_in    : in std_logic_vector(4 downto 0);
-    opcode_in   : in std_logic_vector(OPCODE_W-1 downto 0);
-	 instr_in    : in std_logic_vector(DATA_WIDTH-1 downto 0);
+    RegWrite_in 		: in std_logic;
+    ALUSrc_in   		: in std_logic;
+    Branch_in   		: in std_logic;
+    Jump_in     		: in std_logic;
+    ALUOp_in    		: in std_logic_vector(4 downto 0);
+    opcode_in   		: in std_logic_vector(OPCODE_W-1 downto 0);
+	 instr_in    		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+	 
+	 -- Forwarding
+	 forwardA     		: in std_logic_vector(1 downto 0);
+	 forwardB     		: in std_logic_vector(1 downto 0);
+	 alu_forward  		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+	 wb_forward   		: in std_logic_vector(DATA_WIDTH-1 downto 0);
 	 
     -- To next stage
     alu_result_out  	: out std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -33,8 +39,10 @@ entity execute is
 
     pc_src_out       : out std_logic;
     pc_target_out    : out std_logic_vector(PC_WIDTH-1 downto 0);
-	 instr_out        : out std_logic_vector(DATA_WIDTH-1 downto 0)
+	 instr_out        : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	
+	 rs1_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0);
+	 rs2_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0)
 
   );
 end entity;
@@ -45,18 +53,37 @@ architecture rtl of execute is
   signal alu_res      : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal pc_target    : std_logic_vector(PC_WIDTH-1 downto 0);
   signal pc_src       : std_logic;
-
+  
+  -- Forward
+  signal aluA     	 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal aluB_pre 	 : std_logic_vector(DATA_WIDTH-1 downto 0);
+  
 begin
 
+  -- Forward A
+  with forwardA select
+		 aluA <= regA_in      when "00",
+					alu_forward  when "01",
+					wb_forward   when "10",
+					regA_in      when others;
+
+  -- Forward B
+  with forwardB select
+		 aluB_pre <= regB_in     when "00",
+						 alu_forward when "01",
+						 wb_forward  when "10",
+						 regB_in     when others;
+
+  operandB <= imm_in when ALUSrc_in = '1' else aluB_pre;
   ------------------------------------------------------------
   -- ALU operand mux
   ------------------------------------------------------------
-  operandB <= imm_in when ALUSrc_in = '1' else regB_in;
+  --operandB <= imm_in when ALUSrc_in = '1' else regB_in;
 
   ------------------------------------------------------------
   -- ALU
   ------------------------------------------------------------
-  process(regA_in, operandB, ALUOp_in, opcode_in)
+  process(aluA, operandB, ALUOp_in, opcode_in)
 	begin
 	  case ALUOp_in is
 
@@ -65,9 +92,9 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_ADD =>
 			if opcode_in = OP_ADDU or opcode_in = OP_ADDUI then
-			  alu_res <= std_logic_vector(unsigned(regA_in) + unsigned(operandB));
+			  alu_res <= std_logic_vector(unsigned(aluA) + unsigned(operandB));
 			else
-			  alu_res <= std_logic_vector(signed(regA_in) + signed(operandB));
+			  alu_res <= std_logic_vector(signed(aluA) + signed(operandB));
 			end if;
 
 		 ----------------------------------------------------------------
@@ -75,9 +102,9 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_SUB =>
 			if opcode_in = OP_SUBU or opcode_in = OP_SUBUI then
-			  alu_res <= std_logic_vector(unsigned(regA_in) - unsigned(operandB));
+			  alu_res <= std_logic_vector(unsigned(aluA) - unsigned(operandB));
 			else
-			  alu_res <= std_logic_vector(signed(regA_in) - signed(operandB));
+			  alu_res <= std_logic_vector(signed(aluA) - signed(operandB));
 			end if;
 
 		 ----------------------------------------------------------------
@@ -85,32 +112,32 @@ begin
 		 ----------------------------------------------------------------
 		 -- AND+ANDI
 		 when ALU_AND =>
-			alu_res <= regA_in and operandB;
+			alu_res <= aluA and operandB;
 		 -- OR+ORI
 		 when ALU_OR =>
-			alu_res <= regA_in or operandB;
+			alu_res <= aluA or operandB;
 		 -- XOR+XORI
 		 when ALU_XOR =>
-			alu_res <= regA_in xor operandB;
+			alu_res <= aluA xor operandB;
 
 		 ----------------------------------------------------------------
 		 -- SHIFTS
 		 ----------------------------------------------------------------
 		 when ALU_SLL =>
 			alu_res <= std_logic_vector(
-			  shift_left(unsigned(regA_in),
+			  shift_left(unsigned(aluA),
 			  to_integer(unsigned(operandB(4 downto 0))))
 			);
 
 		 when ALU_SRL =>
 			alu_res <= std_logic_vector(
-			  shift_right(unsigned(regA_in),
+			  shift_right(unsigned(aluA),
 			  to_integer(unsigned(operandB(4 downto 0))))
 			);
 
 		 when ALU_SRA =>
 			alu_res <= std_logic_vector(
-			  shift_right(signed(regA_in),
+			  shift_right(signed(aluA),
 			  to_integer(unsigned(operandB(4 downto 0))))
 			);
 
@@ -119,13 +146,13 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_SLT =>
 			if opcode_in = OP_SLTU or opcode_in = OP_SLTUI then
-			  if unsigned(regA_in) < unsigned(operandB) then
+			  if unsigned(aluA) < unsigned(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
 			  end if;
 			else
-			  if signed(regA_in) < signed(operandB) then
+			  if signed(aluA) < signed(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
@@ -137,13 +164,13 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_SGT =>
 			if opcode_in = OP_SGTU or opcode_in = OP_SGTUI then
-			  if unsigned(regA_in) > unsigned(operandB) then
+			  if unsigned(aluA) > unsigned(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
 			  end if;
 			else
-			  if signed(regA_in) > signed(operandB) then
+			  if signed(aluA) > signed(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
@@ -155,13 +182,13 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_SLE =>
 			if opcode_in = OP_SLEU or opcode_in = OP_SLEUI then
-			  if unsigned(regA_in) <= unsigned(operandB) then
+			  if unsigned(aluA) <= unsigned(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
 			  end if;
 			else
-			  if signed(regA_in) <= signed(operandB) then
+			  if signed(aluA) <= signed(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
@@ -173,13 +200,13 @@ begin
 		 ----------------------------------------------------------------
 		 when ALU_SGE =>
 			if opcode_in = OP_SGEU or opcode_in = OP_SGEUI then
-			  if unsigned(regA_in) >= unsigned(operandB) then
+			  if unsigned(aluA) >= unsigned(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
 			  end if;
 			else
-			  if signed(regA_in) >= signed(operandB) then
+			  if signed(aluA) >= signed(operandB) then
 				 alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			  else
 				 alu_res <= (others => '0');
@@ -190,7 +217,7 @@ begin
 		 -- SET EQUAL
 		 ----------------------------------------------------------------
 		 when ALU_SEQ =>
-			if regA_in = operandB then
+			if aluA = operandB then
 			  alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			else
 			  alu_res <= (others => '0');
@@ -200,7 +227,7 @@ begin
 		 -- SET NOT EQUAL
 		 ----------------------------------------------------------------
 		 when ALU_SNE =>
-			if regA_in /= operandB then
+			if aluA /= operandB then
 			  alu_res <= (DATA_WIDTH-1 downto 1 => '0') & '1';
 			else
 			  alu_res <= (others => '0');
@@ -216,7 +243,7 @@ begin
 	------------------------------------------------------------
 	-- Unified Branch + Jump Control
 	------------------------------------------------------------
-	process(regA_in, Branch_in, Jump_in, opcode_in, imm_in)
+	process(aluA, Branch_in, Jump_in, opcode_in, imm_in)
 	begin
 		 -- defaults
 		 pc_target    <= (others => '0');
@@ -232,7 +259,7 @@ begin
 					pc_src <= '1';
 
 			  elsif opcode_in = OP_JR or opcode_in = OP_JALR then
-					pc_target <= regA_in(PC_WIDTH-1 downto 0);
+					pc_target <= aluA(PC_WIDTH-1 downto 0);
 					pc_src <= '1';
 
 			  end if;
@@ -243,13 +270,13 @@ begin
 		 elsif Branch_in = '1' then
 
 			  if opcode_in = OP_BEQZ then
-					if unsigned(regA_in) = 0 then
+					if unsigned(aluA) = 0 then
 						 pc_target    <= imm_in(PC_WIDTH-1 downto 0);
 						 pc_src   <= '1';
 					end if;
 
 			  elsif opcode_in = OP_BNEZ then
-					if unsigned(regA_in) /= 0 then
+					if unsigned(aluA) /= 0 then
 						 pc_target    <= imm_in(PC_WIDTH-1 downto 0);
 						 pc_src   <= '1';
 					end if;
@@ -257,6 +284,8 @@ begin
 
 		 end if;
 	end process;
+	
+	
 
 
 

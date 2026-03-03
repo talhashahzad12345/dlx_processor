@@ -60,12 +60,74 @@ architecture rtl of dlx is
   ------------------------------------------------------------------
   -- WRITEBACK → DECODE
   ------------------------------------------------------------------
-  signal wb_we   : std_logic;
-  signal wb_addr : std_logic_vector(REG_ADDR_W-1 downto 0);
-  signal wb_data : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal wb_we      : std_logic;
+  signal wb_addr    : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal wb_data    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  
+  ------------------------------------------------------------------
+  -- FORWARDING
+  ------------------------------------------------------------------
+  signal rs1_d      : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs2_d      : std_logic_vector(REG_ADDR_W-1 downto 0);
+  
+  signal forwardA   : std_logic_vector(1 downto 0);
+  signal forwardB   : std_logic_vector(1 downto 0);
+  
+  ------------------------------------------------------------------
+  -- STALL
+  ------------------------------------------------------------------
+  signal is_load_e   : std_logic;
+  signal stall       : std_logic;
+  signal pc_enable_s : std_logic;
+  
 
 begin
 
+  process(rs1_d, rs2_d, rd_e, rd_m, RegWrite_e, RegWrite_m)
+	begin
+
+		 forwardA <= "00";
+		 forwardB <= "00";
+
+		 -- EX/MEM has priority
+		 if RegWrite_e = '1' and rd_e /= "00000" then
+			  if rd_e = rs1_d then
+					forwardA <= "01";
+			  end if;
+			  if rd_e = rs2_d then
+					forwardB <= "01";
+			  end if;
+		 end if;
+
+		 -- Only override if EX didn't match
+		 if RegWrite_m = '1' and rd_m /= "00000" then
+			  if (rd_m = rs1_d) and not (RegWrite_e = '1' and rd_e = rs1_d and rd_e /= "00000") then
+					forwardA <= "10";
+			  end if;
+
+			  if (rd_m = rs2_d) and not (RegWrite_e = '1' and rd_e = rs2_d and rd_e /= "00000") then
+					forwardB <= "10";
+			  end if;
+		 end if;
+
+	end process;
+
+  ------------------------------------------------------------------
+  -- LOAD-USE HAZARD DETECTION
+  ------------------------------------------------------------------
+
+  is_load_e <= '1' when instr_e(31 downto 26) = OP_LW else '0';
+
+  stall <= '1' when
+	(is_load_e = '1') and
+		(
+			(rd_e = rs1_d) or
+			(rd_e = rs2_d)
+		)
+  else '0';
+
+
+  pc_enable_s <= not stall;
   ------------------------------------------------------------------
   -- FETCH
   ------------------------------------------------------------------
@@ -75,6 +137,7 @@ begin
       rst       => rst,
       mux_sel   => pc_src_e,
       jump_addr => pc_target_e,
+		pc_enable => pc_enable_s,
       addr_out  => pc_f,
       instr_out => instr_f
     );
@@ -96,8 +159,8 @@ begin
       regA_out   => regA_d,
       regB_out   => regB_d,
       imm_out    => imm_d,
-      rs1_out    => open,
-      rs2_out    => open,
+      rs1_out    => rs1_d,
+      rs2_out    => rs2_d,
       rd_out     => rd_d,
       pc_out     => pc_d,
 
@@ -107,7 +170,9 @@ begin
       Jump_out     => Jump_d,
       ALUOp_out    => ALUOp_d,
       opcode_out   => opcode_d,
-      instr_out    => instr_d
+      instr_out    => instr_d,
+		
+		stall_in		 => stall
     );
 
   ------------------------------------------------------------------
@@ -138,7 +203,14 @@ begin
       regB_out       => regB_e,
       pc_src_out     => pc_src_e,
       pc_target_out  => pc_target_e,
-      instr_out      => instr_e
+      instr_out      => instr_e,
+		
+		forwardA       => forwardA,
+		forwardB       => forwardB,
+		alu_forward    => alu_m,
+		wb_forward     => wb_data,
+		rs1_in 			=> rs1_d,
+		rs2_in 			=> rs2_d
     );
 
   ------------------------------------------------------------------

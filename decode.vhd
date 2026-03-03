@@ -37,8 +37,10 @@ entity decode is
     ALUOp_out    : out std_logic_vector(4 downto 0);
 	 -- To EXECUTE (ID/EX)
 	 opcode_out   : out std_logic_vector(OPCODE_W-1 downto 0);
-	 instr_out    : out std_logic_vector(DATA_WIDTH-1 downto 0)
-
+	 instr_out    : out std_logic_vector(DATA_WIDTH-1 downto 0);
+	 
+	 --stall
+	 stall_in 	  : in std_logic
   );
 end entity decode;
 
@@ -328,7 +330,15 @@ begin
         ALUOp_out    <= (others => '0');
 		  opcode_out   <= (others => '0');
 		  instr_out    <= (others => '0');
-
+		elsif stall_in = '1' then
+		  -- INSERT BUBBLE
+		  RegWrite_out <= '0';
+		  ALUSrc_out   <= '0';
+		  Branch_out   <= '0';
+		  Jump_out     <= '0';
+		  ALUOp_out    <= (others => '0');
+		  opcode_out   <= OP_NOP;
+		  -- Data signals may pass or stay; control is what matters
       else
         regA_out     <= regA;
         regB_out     <= regB;
