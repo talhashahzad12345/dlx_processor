@@ -16,3 +16,4 @@ vcom dlx.vhd
 vcom tb_dlx.vhd
 
 vsim -voptargs=+acc work.tb_dlx
+do wave.do

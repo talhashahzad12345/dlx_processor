@@ -40,7 +40,9 @@ entity decode is
 	 instr_out    : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	 
 	 --stall
-	 stall_in 	  : in std_logic
+	 stall_in 	  : in std_logic;
+	 --flush
+	 flush_in 	  : in std_logic
   );
 end entity decode;
 
@@ -51,8 +53,8 @@ architecture rtl of decode is
   ------------------------------------------------------------------
   signal opcode : std_logic_vector(OPCODE_W-1 downto 0);
   signal rd     : std_logic_vector(REG_ADDR_W-1 downto 0);
-  signal rs1     : std_logic_vector(REG_ADDR_W-1 downto 0);
-  signal rs2     : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs1    : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs2    : std_logic_vector(REG_ADDR_W-1 downto 0);
   signal imm16  : std_logic_vector(IMM_W-1 downto 0);
 
   ------------------------------------------------------------------
@@ -80,6 +82,7 @@ architecture rtl of decode is
   signal jump_addr   : std_logic_vector(25 downto 0);
   signal jump_reg    : std_logic_vector(REG_ADDR_W-1 downto 0);
   signal imm_actual  : std_logic_vector(DATA_WIDTH-1 downto 0);
+
 
 begin
 
@@ -330,6 +333,16 @@ begin
         ALUOp_out    <= (others => '0');
 		  opcode_out   <= (others => '0');
 		  instr_out    <= (others => '0');
+
+		elsif flush_in = '1' then
+
+		  RegWrite_out <= '0';
+		  ALUSrc_out   <= '0';
+		  Branch_out   <= '0';
+		  Jump_out     <= '0';
+		  ALUOp_out    <= (others => '0');
+		  opcode_out   <= OP_NOP;
+		  
 		elsif stall_in = '1' then
 		  -- INSERT BUBBLE
 		  RegWrite_out <= '0';
@@ -338,7 +351,7 @@ begin
 		  Jump_out     <= '0';
 		  ALUOp_out    <= (others => '0');
 		  opcode_out   <= OP_NOP;
-		  -- Data signals may pass or stay; control is what matters
+
       else
         regA_out     <= regA;
         regB_out     <= regB;

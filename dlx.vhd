@@ -80,9 +80,23 @@ architecture rtl of dlx is
   signal stall       : std_logic;
   signal pc_enable_s : std_logic;
   
+  ------------------------------------------------------------------
+  -- FLUSH
+  ------------------------------------------------------------------
+  signal flush : std_logic;
+  signal instr_f_mux : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
 
+  ------------------------------------------------------------------
+  -- FLUSH
+  ------------------------------------------------------------------
+  flush <= pc_src_e;
+  instr_f_mux <= (others => '0') when flush = '1' else instr_f;
+  
+  ------------------------------------------------------------------
+  -- FORWARDING
+  ------------------------------------------------------------------
   process(rs1_d, rs2_d, rd_e, rd_m, RegWrite_e, RegWrite_m)
 	begin
 
@@ -149,7 +163,7 @@ begin
     port map (
       clk        => clk,
       rst        => rst,
-      instr_in   => instr_f,
+      instr_in   => instr_f_mux,
       pc_in      => pc_f,
 
       wb_we      => wb_we,
@@ -172,6 +186,7 @@ begin
       opcode_out   => opcode_d,
       instr_out    => instr_d,
 		
+		flush_in     => flush,
 		stall_in		 => stall
     );
 
