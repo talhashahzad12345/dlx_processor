@@ -73,6 +73,9 @@ architecture rtl of dlx is
   signal forwardA   : std_logic_vector(1 downto 0);
   signal forwardB   : std_logic_vector(1 downto 0);
   
+  signal rs1_exec : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs2_exec : std_logic_vector(REG_ADDR_W-1 downto 0);
+  
   ------------------------------------------------------------------
   -- STALL
   ------------------------------------------------------------------
@@ -83,49 +86,82 @@ architecture rtl of dlx is
   ------------------------------------------------------------------
   -- FLUSH
   ------------------------------------------------------------------
-  signal flush : std_logic;
-  signal instr_f_mux : std_logic_vector(DATA_WIDTH-1 downto 0);
-
+  signal flush 			: std_logic;
+  signal instr_f_mux 	: std_logic_vector(DATA_WIDTH-1 downto 0);
+  
+  signal instr_d_mux		: std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal RegWrite_d_mux : std_logic;
+  signal Branch_d_mux   : std_logic;
+  signal Jump_d_mux     : std_logic;
+  signal ALUSrc_d_mux   : std_logic;
+  signal ALUOp_d_mux    : std_logic_vector(4 downto 0);
+  signal rd_d_mux       : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal regA_d_mux     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal regB_d_mux     : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal imm_d_mux      : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal opcode_d_mux 	: std_logic_vector(OPCODE_W-1 downto 0);
+  signal pc_d_mux       : std_logic_vector(PC_WIDTH-1 downto 0);
+  
+  signal flush_d : std_logic;
+  
 begin
 
   ------------------------------------------------------------------
   -- FLUSH
   ------------------------------------------------------------------
-  flush <= pc_src_e;
-  instr_f_mux <= (others => '0') when flush = '1' else instr_f;
+  process(clk)
+	begin
+	  if rising_edge(clk) then
+		  flush_d <= flush;
+	  end if;
+	end process;
+  
+  flush 			 <= pc_src_e;
+  instr_f_mux <= (others => '0') when (flush='1' or flush_d='1')
+               else instr_f;
+  
+  -- Kill instruction already in ID when branch taken
+  instr_d_mux   <= (others => '0') when flush='1' else instr_d;
+  RegWrite_d_mux<= '0' when flush='1' else RegWrite_d;
+  Branch_d_mux  <= '0' when flush='1' else Branch_d;
+  Jump_d_mux    <= '0' when flush='1' else Jump_d;
+  ALUSrc_d_mux  <= '0' when flush='1' else ALUSrc_d;
+  ALUOp_d_mux   <= (others=>'0') when flush='1' else ALUOp_d;
+
+  rd_d_mux      <= (others=>'0') when flush='1' else rd_d;
+  regA_d_mux    <= (others=>'0') when flush='1' else regA_d;
+  regB_d_mux    <= (others=>'0') when flush='1' else regB_d;
+  imm_d_mux     <= (others=>'0') when flush='1' else imm_d;
+  opcode_d_mux	 <= (others=>'0') when flush='1' else opcode_d;
+  pc_d_mux      <= pc_d;
+  
   
   ------------------------------------------------------------------
   -- FORWARDING
   ------------------------------------------------------------------
-  process(rs1_d, rs2_d, rd_e, rd_m, RegWrite_e, RegWrite_m)
-	begin
+  rs1_exec <= (others => '0') when flush='1' else rs1_d;
+  rs2_exec <= (others => '0') when flush='1' else rs2_d;
 
+  process(rs1_exec, rs2_exec, rd_e, rd_m, RegWrite_e, RegWrite_m)
+	begin
 		 forwardA <= "00";
 		 forwardB <= "00";
 
-		 -- EX/MEM has priority
-		 if RegWrite_e = '1' and rd_e /= "00000" then
-			  if rd_e = rs1_d then
-					forwardA <= "01";
-			  end if;
-			  if rd_e = rs2_d then
-					forwardB <= "01";
-			  end if;
+		 -- MEM stage forwarding (priority)
+		 if RegWrite_m = '1' and rd_m /= "00000" and rd_m = rs1_exec then
+			  forwardA <= "10";
+		 elsif RegWrite_e = '1' and rd_e /= "00000" and rd_e = rs1_exec then
+			  forwardA <= "01";
 		 end if;
 
-		 -- Only override if EX didn't match
-		 if RegWrite_m = '1' and rd_m /= "00000" then
-			  if (rd_m = rs1_d) and not (RegWrite_e = '1' and rd_e = rs1_d and rd_e /= "00000") then
-					forwardA <= "10";
-			  end if;
-
-			  if (rd_m = rs2_d) and not (RegWrite_e = '1' and rd_e = rs2_d and rd_e /= "00000") then
-					forwardB <= "10";
-			  end if;
+		 if RegWrite_m = '1' and rd_m /= "00000" and rd_m = rs2_exec then
+			  forwardB <= "10";
+		 elsif RegWrite_e = '1' and rd_e /= "00000" and rd_e = rs2_exec then
+			  forwardB <= "01";
 		 end if;
-
 	end process;
 
+	
   ------------------------------------------------------------------
   -- LOAD-USE HAZARD DETECTION
   ------------------------------------------------------------------
@@ -136,7 +172,7 @@ begin
 	(is_load_e = '1') and
 		(
 			(rd_e = rs1_d) or
-			(rd_e = rs2_d)
+			(rd_e = rs2_d and ALUSrc_d = '0')
 		)
   else '0';
 
@@ -198,19 +234,19 @@ begin
       clk => clk,
       rst => rst,
 
-      regA_in      => regA_d,
-      regB_in      => regB_d,
-      imm_in       => imm_d,
-      rd_in        => rd_d,
-      pc_in        => pc_d,
+      regA_in      => regA_d_mux,
+      regB_in      => regB_d_mux,
+      imm_in       => imm_d_mux,
+      rd_in        => rd_d_mux,
+      pc_in        => pc_d_mux,
 
-      RegWrite_in  => RegWrite_d,
-      ALUSrc_in    => ALUSrc_d,
-      Branch_in    => Branch_d,
-      Jump_in      => Jump_d,
-      ALUOp_in     => ALUOp_d,
-      opcode_in    => opcode_d,
-      instr_in     => instr_d,
+      RegWrite_in  => RegWrite_d_mux,
+      ALUSrc_in    => ALUSrc_d_mux,
+      Branch_in    => Branch_d_mux,
+      Jump_in      => Jump_d_mux,
+      ALUOp_in     => ALUOp_d_mux,
+      opcode_in    => opcode_d_mux,
+      instr_in     => instr_d_mux,
 
       alu_result_out => alu_e,
       rd_out         => rd_e,
@@ -222,10 +258,10 @@ begin
 		
 		forwardA       => forwardA,
 		forwardB       => forwardB,
-		alu_forward    => alu_m,
-		wb_forward     => wb_data,
-		rs1_in 			=> rs1_d,
-		rs2_in 			=> rs2_d
+		alu_forward    => alu_e,
+		wb_forward     => alu_m,
+		rs1_in 			=> rs1_exec,
+		rs2_in 			=> rs2_exec
     );
 
   ------------------------------------------------------------------

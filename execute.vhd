@@ -316,7 +316,7 @@ begin
 			pc_target_out    <= pc_target;
 			instr_out        <= instr_in;
 			pc_src_out       <= pc_src;
-			regB_out 		  <= regB_in;
+			regB_out 		  <= aluB_pre;
 		 end if;
 	  end if;
   end process;

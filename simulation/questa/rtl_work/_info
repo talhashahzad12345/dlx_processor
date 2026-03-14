@@ -10,7 +10,7 @@ z2
 cModel Technology
 Z0 dC:/Users/TS/Desktop/dlx_processor/simulation/questa
 Edecode
-Z1 w1772531803
+Z1 w1772842011
 Z2 DPx4 work 7 dlx_pkg 0 22 ?:;RMa2dc;=m8gkc7XZZl3
 Z3 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
@@ -25,9 +25,9 @@ V0SHdW_^jERRkz=<9IUGRO1
 !s100 9:RW<j1Z^:jKEnfWK:?;Y0
 Z8 OL;C;2024.3;79
 31
-Z9 !s110 1772534437
+Z9 !s110 1773444435
 !i10b 1
-Z10 !s108 1772534437.000000
+Z10 !s108 1773444435.000000
 Z11 !s90 -reportprogress|300|-93|-work|work|C:/Users/TS/Desktop/dlx_processor/decode.vhd|
 Z12 !s107 C:/Users/TS/Desktop/dlx_processor/decode.vhd|
 !i113 0
@@ -42,9 +42,9 @@ R5
 DEx4 work 6 decode 0 22 0SHdW_^jERRkz=<9IUGRO1
 !i122 4
 l87
-L49 328
-V?:SJ7E6RSZ`o[l<hd;2TT0
-!s100 291;MZj`dj4o90>9bz_Y93
+L49 352
+V1ekPO8CmzWj]63GYFMecG0
+!s100 k12X3SoBXmo99b8Z1;>HF1
 R8
 31
 R9
@@ -56,7 +56,7 @@ R12
 R13
 R14
 Edlx
-w1772531779
+w1772672487
 R2
 R3
 R4
@@ -71,9 +71,9 @@ VZV7NUAEfVj7W=?Q4ee4l00
 !s100 Sn[CdNg=QhQ8X?<T?TM[<0
 R8
 31
-!s110 1772534438
+R9
 !i10b 1
-!s108 1772534438.000000
+R10
 !s90 -reportprogress|300|-93|-work|work|C:/Users/TS/Desktop/dlx_processor/dlx.vhd|
 !s107 C:/Users/TS/Desktop/dlx_processor/dlx.vhd|
 !i113 0
@@ -93,9 +93,9 @@ V?:;RMa2dc;=m8gkc7XZZl3
 !s100 A3[nnRn_QPb]SiY_MHSFC1
 R8
 31
-Z16 !s110 1772534436
+Z16 !s110 1773444434
 !i10b 1
-Z17 !s108 1772534436.000000
+Z17 !s108 1773444434.000000
 !s90 -reportprogress|300|-93|-work|work|C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd|
 !s107 C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd|
 !i113 0
@@ -204,11 +204,11 @@ VeEK<n1Ym_2YUl?J44VXoe3
 !s100 TK9RPSF]K]bYInJ<ilmcA2
 R8
 31
-Z33 !s110 1772534435
+R16
 !i10b 1
-Z34 !s108 1772534435.000000
-Z35 !s90 -reportprogress|300|-93|-work|work|C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
-Z36 !s107 C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
+Z33 !s108 1773444433.000000
+Z34 !s90 -reportprogress|300|-93|-work|work|C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
+Z35 !s107 C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
 !i113 0
 R13
 R14
@@ -224,11 +224,11 @@ V6ahd;13C45RfRhaQSIeS<1
 !s100 h8BM99L9JmCHWI>1MObb40
 R8
 31
-R33
+R16
 !i10b 1
+R33
 R34
 R35
-R36
 !i113 0
 R13
 R14

@@ -82,10 +82,21 @@ architecture rtl of decode is
   signal jump_addr   : std_logic_vector(25 downto 0);
   signal jump_reg    : std_logic_vector(REG_ADDR_W-1 downto 0);
   signal imm_actual  : std_logic_vector(DATA_WIDTH-1 downto 0);
-
+  
+  ------------------------------------------------------------------
+  -- Forwarding
+  ------------------------------------------------------------------
+  signal regA_final : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal regB_final : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
 
+  -- WB → ID forwarding
+  regA_final <= wb_data when (wb_we = '1' and wb_addr = rs1_actual and wb_addr /= "00000")
+					  else regA;
+
+  regB_final <= wb_data when (wb_we = '1' and wb_addr = ra2_mux and wb_addr /= "00000")
+					  else regB;
 
   ------------------------------------------------------------------
   -- Instruction field extraction
@@ -306,9 +317,15 @@ begin
 	--but jump
 	imm_actual <=
     std_logic_vector(resize(unsigned(jump_addr), DATA_WIDTH))
-        when (opcode = OP_J or opcode = OP_JAL)
+        when (opcode = OP_J or opcode = OP_JAL or
+              opcode = OP_BEQZ or opcode = OP_BNEZ)
     else
         imm_ext;
+--	imm_actual <=
+--    std_logic_vector(resize(unsigned(jump_addr), DATA_WIDTH))
+--        when (opcode = OP_J or opcode = OP_JAL)
+--    else
+--        imm_ext;
 
 	
   ------------------------------------------------------------------
@@ -334,27 +351,45 @@ begin
 		  opcode_out   <= (others => '0');
 		  instr_out    <= (others => '0');
 
-		elsif flush_in = '1' then
-
-		  RegWrite_out <= '0';
-		  ALUSrc_out   <= '0';
-		  Branch_out   <= '0';
-		  Jump_out     <= '0';
-		  ALUOp_out    <= (others => '0');
-		  opcode_out   <= OP_NOP;
+--		elsif flush_in = '1' then
+--
+--		  regA_out     <= (others => '0');
+--		  regB_out     <= (others => '0');
+--		  imm_out      <= (others => '0');
+--		  rs1_out      <= (others => '0');
+--		  rs2_out      <= (others => '0');
+--		  rd_out       <= (others => '0');
+--		  pc_out       <= (others => '0');
+--		  
+--		  RegWrite_out <= '0';
+--		  ALUSrc_out   <= '0';
+--		  Branch_out   <= '0';
+--		  Jump_out     <= '0';
+--		  ALUOp_out    <= (others => '0');
+--		  opcode_out   <= OP_NOP;
+--		  instr_out    <= (others => '0');
 		  
 		elsif stall_in = '1' then
 		  -- INSERT BUBBLE
+		  regA_out     <= (others => '0');
+		  regB_out     <= (others => '0');
+		  imm_out      <= (others => '0');
+		  rs1_out      <= (others => '0');
+		  rs2_out      <= (others => '0');
+		  rd_out       <= (others => '0');
+		  pc_out       <= (others => '0');
+
 		  RegWrite_out <= '0';
 		  ALUSrc_out   <= '0';
 		  Branch_out   <= '0';
 		  Jump_out     <= '0';
 		  ALUOp_out    <= (others => '0');
 		  opcode_out   <= OP_NOP;
+		  instr_out    <= (others => '0');
 
       else
-        regA_out     <= regA;
-        regB_out     <= regB;
+        regA_out     <= regA_final;
+        regB_out     <= regB_final;
         imm_out      <= imm_actual;
         rs1_out      <= rs1_actual;
         rs2_out      <= rs2;

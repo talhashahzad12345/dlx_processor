@@ -10,6 +10,8 @@ add wave -noupdate /tb_dlx/dut/execute_inst/instr_out
 add wave -noupdate /tb_dlx/dut/memory_inst/instr_in
 add wave -noupdate /tb_dlx/dut/memory_inst/instr_out
 add wave -noupdate /tb_dlx/dut/writeback_inst/instr_in
+add wave -noupdate /tb_dlx/dut/decode_inst/pc_out
+add wave -noupdate /tb_dlx/dut/execute_inst/pc_in
 add wave -noupdate /tb_dlx/dut/execute_inst/pc_src_out
 add wave -noupdate /tb_dlx/dut/execute_inst/pc_target_out
 add wave -noupdate /tb_dlx/dut/decode_inst/stall_in
@@ -32,7 +34,6 @@ add wave -noupdate /tb_dlx/dut/decode_inst/imm_out
 add wave -noupdate /tb_dlx/dut/decode_inst/rs1_out
 add wave -noupdate /tb_dlx/dut/decode_inst/rs2_out
 add wave -noupdate /tb_dlx/dut/decode_inst/rd_out
-add wave -noupdate /tb_dlx/dut/decode_inst/pc_out
 add wave -noupdate /tb_dlx/dut/decode_inst/RegWrite_out
 add wave -noupdate /tb_dlx/dut/decode_inst/ALUSrc_out
 add wave -noupdate /tb_dlx/dut/decode_inst/Branch_out
@@ -64,7 +65,6 @@ add wave -noupdate /tb_dlx/dut/execute_inst/regA_in
 add wave -noupdate /tb_dlx/dut/execute_inst/regB_in
 add wave -noupdate /tb_dlx/dut/execute_inst/imm_in
 add wave -noupdate /tb_dlx/dut/execute_inst/rd_in
-add wave -noupdate /tb_dlx/dut/execute_inst/pc_in
 add wave -noupdate /tb_dlx/dut/execute_inst/RegWrite_in
 add wave -noupdate /tb_dlx/dut/execute_inst/ALUSrc_in
 add wave -noupdate /tb_dlx/dut/execute_inst/Branch_in
@@ -119,9 +119,9 @@ add wave -noupdate /tb_dlx/dut/decode_inst/rf_inst/rd1
 add wave -noupdate /tb_dlx/dut/decode_inst/rf_inst/rd2
 add wave -noupdate -expand /tb_dlx/dut/decode_inst/rf_inst/ram_block
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {49 ns} 0}
+WaveRestoreCursors {{Cursor 1} {570 ns} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 350
+configure wave -namecolwidth 245
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
@@ -135,4 +135,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {865 ns}
+WaveRestoreZoom {379 ns} {689 ns}

@@ -1,1 +1,1 @@
-c:/intelfpga_lite/24.1std/questa_fse/win64/VisualizerRls/bin/viscom.exe -nolock -quiet -jmem_size 32194848 work.tb_dlx -quiet -auto_acc_if_foreign -work work +acc -allow_unnamed -o _opt -id 1-30d16bec57c9-69a6c621-3e4-53fc +__betafsm
+c:/intelfpga_lite/24.1std/questa_fse/win64/VisualizerRls/bin/viscom.exe -nolock -quiet -jmem_size 31801632 work.tb_dlx -quiet -auto_acc_if_foreign -work work +acc -allow_unnamed -o _opt -id 1-30d16bec57c9-69b4a3b6-1a-d5c +__betafsm
