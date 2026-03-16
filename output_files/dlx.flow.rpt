@@ -1,5 +1,5 @@
 Flow report for dlx
-Sat Feb 14 21:19:44 2026
+Mon Mar 16 02:27:08 2026
 Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
 
 
@@ -41,24 +41,24 @@ on the Quartus Prime software download page.
 +--------------------------------------------------------------------------------------+
 ; Flow Summary                                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Flow Status                        ; Successful - Sat Feb 14 21:19:44 2026           ;
+; Flow Status                        ; Successful - Mon Mar 16 02:27:08 2026           ;
 ; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Lite Edition ;
 ; Revision Name                      ; dlx                                             ;
 ; Top-level Entity Name              ; dlx                                             ;
 ; Family                             ; MAX 10                                          ;
 ; Device                             ; 10M50DAF484C7G                                  ;
 ; Timing Models                      ; Final                                           ;
-; Total logic elements               ; 349                                             ;
-;     Total combinational functions  ; 179                                             ;
-;     Dedicated logic registers      ; 312                                             ;
-; Total registers                    ; 312                                             ;
-; Total pins                         ; 214                                             ;
+; Total logic elements               ; 1 / 49,760 ( < 1 % )                            ;
+;     Total combinational functions  ; 1 / 49,760 ( < 1 % )                            ;
+;     Dedicated logic registers      ; 0 / 49,760 ( 0 % )                              ;
+; Total registers                    ; 0                                               ;
+; Total pins                         ; 2 / 360 ( < 1 % )                               ;
 ; Total virtual pins                 ; 0                                               ;
-; Total memory bits                  ; 34,816                                          ;
-; Embedded Multiplier 9-bit elements ; 0                                               ;
-; Total PLLs                         ; 0                                               ;
-; UFM blocks                         ; 0                                               ;
-; ADC blocks                         ; 0                                               ;
+; Total memory bits                  ; 0 / 1,677,312 ( 0 % )                           ;
+; Embedded Multiplier 9-bit elements ; 0 / 288 ( 0 % )                                 ;
+; Total PLLs                         ; 0 / 4 ( 0 % )                                   ;
+; UFM blocks                         ; 0 / 1 ( 0 % )                                   ;
+; ADC blocks                         ; 0 / 2 ( 0 % )                                   ;
 +------------------------------------+-------------------------------------------------+
 
 
@@ -67,7 +67,7 @@ on the Quartus Prime software download page.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 02/14/2026 21:19:31 ;
+; Start date & time ; 03/16/2026 02:26:14 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; dlx                 ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ on the Quartus Prime software download page.
 +-------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id                        ;
 +-------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
-; COMPILER_SIGNATURE_ID               ; 345052807176.177112917133476           ; --            ; --          ; --                                ;
+; COMPILER_SIGNATURE_ID               ; 345052807176.177364957422060           ; --            ; --          ; --                                ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_timing           ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_boundary_scan    ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_signal_integrity ;
@@ -106,8 +106,12 @@ on the Quartus Prime software download page.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:12     ; 1.0                     ; 4883 MB             ; 00:00:24                           ;
-; Total                ; 00:00:12     ; --                      ; --                  ; 00:00:24                           ;
+; Analysis & Synthesis ; 00:00:17     ; 1.0                     ; 4857 MB             ; 00:00:39                           ;
+; Fitter               ; 00:00:14     ; 1.0                     ; 5647 MB             ; 00:00:18                           ;
+; Assembler            ; 00:00:07     ; 1.0                     ; 4836 MB             ; 00:00:06                           ;
+; Timing Analyzer      ; 00:00:07     ; 1.0                     ; 4918 MB             ; 00:00:06                           ;
+; EDA Netlist Writer   ; 00:00:01     ; 1.0                     ; 4682 MB             ; 00:00:01                           ;
+; Total                ; 00:00:46     ; --                      ; --                  ; 00:01:10                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -117,6 +121,10 @@ on the Quartus Prime software download page.
 ; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +----------------------+------------------+------------+------------+----------------+
 ; Analysis & Synthesis ; DESKTOP-ND4S7RO  ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; DESKTOP-ND4S7RO  ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; DESKTOP-ND4S7RO  ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; DESKTOP-ND4S7RO  ; Windows 10 ; 10.0       ; x86_64         ;
+; EDA Netlist Writer   ; DESKTOP-ND4S7RO  ; Windows 10 ; 10.0       ; x86_64         ;
 +----------------------+------------------+------------+------------+----------------+
 
 
@@ -124,6 +132,10 @@ on the Quartus Prime software download page.
 ; Flow Log ;
 ------------
 quartus_map --read_settings_files=on --write_settings_files=off dlx -c dlx
+quartus_fit --read_settings_files=off --write_settings_files=off dlx -c dlx
+quartus_asm --read_settings_files=off --write_settings_files=off dlx -c dlx
+quartus_sta dlx -c dlx
+quartus_eda --read_settings_files=off --write_settings_files=off dlx -c dlx
 
 
 
