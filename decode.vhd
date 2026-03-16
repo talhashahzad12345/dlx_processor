@@ -111,9 +111,10 @@ begin
   ra2_mux 	<= rd when opcode = OP_SW else rs2;
   -- For branches, register is stored in rd field
   rs1_actual <=
-    rd when (opcode = OP_BEQZ or opcode = OP_BNEZ) else
-    jump_reg when (opcode = OP_JR or opcode = OP_JALR) else
-    rs1;
+  rd when (opcode = OP_BEQZ or opcode = OP_BNEZ) else
+  jump_reg when (opcode = OP_JR or opcode = OP_JALR or
+                 opcode = OP_PCH or opcode = OP_PD or opcode = OP_PDU) else
+  rs1;
 
   ------------------------------------------------------------------
   -- Register file
@@ -291,7 +292,29 @@ begin
 		 when OP_JALR =>
 			Jump <= '1';
 			RegWrite <= '1';
-
+		 -- =========================
+		 -- UART PRINT INSTRUCTIONS
+		 -- =========================
+		 when OP_PCH =>
+		 RegWrite <= '0';
+		 ALUSrc   <= '0';
+		 Branch   <= '0';
+		 Jump     <= '0';
+		 ALUOp    <= ALU_ADD;  -- unused but safe
+ 
+		 when OP_PD =>
+		 RegWrite <= '0';
+		 ALUSrc   <= '0';
+		 Branch   <= '0';
+		 Jump     <= '0';
+		 ALUOp    <= ALU_ADD;
+ 
+		 when OP_PDU =>
+		 RegWrite <= '0';
+		 ALUSrc   <= '0';
+		 Branch   <= '0';
+		 Jump     <= '0';
+		 ALUOp    <= ALU_ADD;
 
 		 when others =>
 			null;
