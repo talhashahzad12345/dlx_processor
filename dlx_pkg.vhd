@@ -78,6 +78,13 @@ package dlx_pkg is
   constant OP_JR    : std_logic_vector(5 downto 0) := "101110";
   constant OP_JAL   : std_logic_vector(5 downto 0) := "101111";
   constant OP_JALR  : std_logic_vector(5 downto 0) := "110000";
+  
+  ------------------------------------------------------------------
+  -- UART
+  ------------------------------------------------------------------
+  constant OPCODE_PCH  : std_logic_vector(5 downto 0) := "110001"; -- 0x31
+  constant OPCODE_PD   : std_logic_vector(5 downto 0) := "110010"; -- 0x32
+  constant OPCODE_PDU  : std_logic_vector(5 downto 0) := "110011"; -- 0x33
 
   ------------------------------------------------------------------
   -- ALU operation encodings (internal)
