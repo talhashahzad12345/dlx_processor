@@ -1,0 +1,62 @@
+# =========================
+# Quartus Generated Files
+# =========================
+db/
+incremental_db/
+output_files/
+simulation/
+
+*.qws
+*.qdf
+*.sopcinfo
+*.ipregen.rpt
+
+# Quartus compilation reports
+*.rpt
+*.summary
+*.smsg
+
+# Programming files
+*.sof
+*.pof
+*.jic
+*.rbf
+
+# Temp / backup files
+*.bak
+*.tmp
+*.ddb
+*.log
+
+# =========================
+# QuestaSim / ModelSim
+# =========================
+work/
+vsim.wlf
+transcript
+*.wlf
+*.vstf
+
+# Simulation temp
+*.log
+*.jou
+
+# =========================
+# OS / Editor files
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# =========================
+# VS Code / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Python (if scripts used)
+# =========================
+__pycache__/
+*.pyc
