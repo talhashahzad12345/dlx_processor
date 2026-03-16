@@ -12,10 +12,10 @@ Z0 !s99 nomlopt
 cModel Technology
 Z1 dC:/Users/TS/Desktop/dlx_processor
 T_opt
-!s110 1773699377
-V=@nV3P:kRG?jS8[11H@zQ2
+!s110 1773700652
+V`ZnL;Dm7D:<`8G6;N3ME11
 04 6 3 work tb_dlx sim 1
-=1-30d16bec57c9-69b88130-57-3e04
+=1-30d16bec57c9-69b8862b-14f-5b68
 R0
 !s12f OEM100
 !s12b OEM100
@@ -25,42 +25,40 @@ o-quiet -auto_acc_if_foreign -work work +acc
 tCvgOpt 0
 n@_opt
 OL;O;2024.3;79
-R1
 Edecode
 Z2 w1773649425
-Z3 DPx4 work 7 dlx_pkg 0 22 iY_zY:Sl2VHm_57YBCd`?1
+Z3 DPx4 work 7 dlx_pkg 0 22 =0d>PeaI?z7>?[BTXI>S?3
 Z4 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z5 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z6 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 33
+!i122 4
 R1
-Z7 8C:/Users/TS/Desktop/dlx_processor/decode.vhd
-Z8 FC:/Users/TS/Desktop/dlx_processor/decode.vhd
+Z7 8decode.vhd
+Z8 Fdecode.vhd
 l0
 L7 1
-Ve:G4=J@_1gSA9FOozI:_F0
+V;NLdiCmJbP`N_N^`VUlm[3
 !s100 9:RW<j1Z^:jKEnfWK:?;Y0
 Z9 OL;C;2024.3;79
 32
-Z10 !s110 1773700104
+Z10 !s110 1773700648
 !i10b 1
-Z11 !s108 1773700104.000000
-Z12 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/decode.vhd|
-Z13 !s107 C:/Users/TS/Desktop/dlx_processor/decode.vhd|
+Z11 !s108 1773700648.000000
+Z12 !s90 -reportprogress|300|decode.vhd|
+Z13 !s107 decode.vhd|
 !i113 0
-Z14 o-work work -2002 -explicit
-Z15 tExplicit 1 CvgOpt 0
+Z14 tExplicit 1 CvgOpt 0
 Artl
-Z16 DEx4 work 7 regfile 0 22 h94;kU5U7i?V9=RLZAN3=1
+Z15 DEx4 work 7 regfile 0 22 3BB[mb_@`6GK]kW@5RKiR3
 R3
 R4
 R5
 R6
-Z17 DEx4 work 6 decode 0 22 e:G4=J@_1gSA9FOozI:_F0
-!i122 33
+Z16 DEx4 work 6 decode 0 22 ;NLdiCmJbP`N_N^`VUlm[3
+!i122 4
 l92
 L49 386
-VE3WH8Qb;K2>VBfI4M@Mao2
+V]fDVikokPT7znYAlHP;fe3
 !s100 lA01E4FmD59`C2kNobJRc0
 R9
 32
@@ -71,432 +69,412 @@ R12
 R13
 !i113 0
 R14
-R15
 Edlx
-Z18 w1773445488
+Z17 w1773445488
 R3
 R4
 R5
 R6
-!i122 34
+!i122 9
 R1
-Z19 8C:/Users/TS/Desktop/dlx_processor/dlx.vhd
-Z20 FC:/Users/TS/Desktop/dlx_processor/dlx.vhd
+Z18 8dlx.vhd
+Z19 Fdlx.vhd
 l0
 L7 1
-V[9F8Ik:Fk6Vz1f<iXk5D60
+V@XWM7JTX[SalQi;3cc7C;3
 !s100 Sn[CdNg=QhQ8X?<T?TM[<0
 R9
 32
-R10
+Z20 !s110 1773700649
 !i10b 1
-R11
-Z21 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/dlx.vhd|
-Z22 !s107 C:/Users/TS/Desktop/dlx_processor/dlx.vhd|
+Z21 !s108 1773700649.000000
+Z22 !s90 -reportprogress|300|dlx.vhd|
+Z23 !s107 dlx.vhd|
 !i113 0
 R14
-R15
 Artl
-Z23 DEx4 work 9 writeback 0 22 h<ERM9i@[<4L@B8U:0Lh82
-Z24 DEx4 work 6 memory 0 22 K@dYIE6Va]4P<B3R8CIKS3
-Z25 DEx4 work 7 execute 0 22 NLVbmdPWIX?jnD<^bKII<3
-R17
-Z26 DEx4 work 5 fetch 0 22 G:ABKA^od4;HfL=_NV[NV2
+Z24 DEx4 work 9 writeback 0 22 1ISOfcDFKD;G9ZEaaehZD2
+Z25 DEx4 work 6 memory 0 22 RI7[7X@R2AUZRJLKDFZS30
+Z26 DEx4 work 7 execute 0 22 KVZcjSW4m]RdJ3bo@Hc>U3
+R16
+Z27 DEx4 work 5 fetch 0 22 n66:zG5N@oNQJgTnSnbRi1
 R3
 R4
 R5
 R6
-Z27 DEx4 work 3 dlx 0 22 [9F8Ik:Fk6Vz1f<iXk5D60
-!i122 34
+Z28 DEx4 work 3 dlx 0 22 @XWM7JTX[SalQi;3cc7C;3
+!i122 9
 l107
 L14 288
-V^2[J8BPbIQneWMU0PG<6h1
+V:eMBWG9Vh7RG_IzX9LLm[2
 !s100 <]zChXf=d2cE5>NLaeUg33
 R9
 32
-R10
+R20
 !i10b 1
-R11
 R21
 R22
+R23
 !i113 0
 R14
-R15
 Pdlx_pkg
 R5
 R6
-!i122 35
+!i122 0
 w1773649570
 R1
-8C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd
-FC:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd
+8dlx_pkg.vhd
+Fdlx_pkg.vhd
 l0
 L4 105
-ViY_zY:Sl2VHm_57YBCd`?1
+V=0d>PeaI?z7>?[BTXI>S?3
 !s100 G_P@7=d3:aJIXA218e<hd3
+R9
+32
+!s110 1773700646
+!i10b 1
+Z29 !s108 1773700646.000000
+!s90 -reportprogress|300|dlx_pkg.vhd|
+!s107 dlx_pkg.vhd|
+!i113 0
+R14
+Edmem
+Z30 w1771370924
+Z31 DPx9 altera_mf 20 altera_mf_components 0 22 K2nP0Jo_3Z^LgLEDTAdJT1
+R5
+R6
+!i122 6
+R1
+Z32 8dmem.vhd
+Z33 Fdmem.vhd
+l0
+Z34 L43 1
+V]ka6;UQ_k95cOi^3IfmA<3
+!s100 HJ8H^>:fR0^M<;5LWcV4n0
 R9
 32
 R10
 !i10b 1
 R11
-!s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd|
-!s107 C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd|
+Z35 !s90 -reportprogress|300|dmem.vhd|
+Z36 !s107 dmem.vhd|
 !i113 0
 R14
-R15
-Edmem
-Z28 w1771370924
-Z29 DPx9 altera_mf 20 altera_mf_components 0 22 K2nP0Jo_3Z^LgLEDTAdJT1
-R5
-R6
-!i122 36
-R1
-Z30 8C:/Users/TS/Desktop/dlx_processor/dmem.vhd
-Z31 FC:/Users/TS/Desktop/dlx_processor/dmem.vhd
-l0
-Z32 L43 1
-V[VZ7FJ5lFPknAWUWl6E1K3
-!s100 HJ8H^>:fR0^M<;5LWcV4n0
-R9
-32
-Z33 !s110 1773700105
-!i10b 1
-Z34 !s108 1773700105.000000
-Z35 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/dmem.vhd|
-Z36 !s107 C:/Users/TS/Desktop/dlx_processor/dmem.vhd|
-!i113 0
-R14
-R15
 Asyn
-R29
+R31
 R5
 R6
-Z37 DEx4 work 4 dmem 0 22 [VZ7FJ5lFPknAWUWl6E1K3
-!i122 36
+Z37 DEx4 work 4 dmem 0 22 ]ka6;UQ_k95cOi^3IfmA<3
+!i122 6
 l59
 L55 36
-VzMW[J<c`2;0:lMeD<d9gI3
+VTZ@SL0jn;hNRnBN;AZkGl2
 !s100 =WdFJHoH9>4P_P86[bgz00
 R9
 32
-R33
+R10
 !i10b 1
-R34
+R11
 R35
 R36
 !i113 0
 R14
-R15
 Eexecute
 Z38 w1772663192
 R3
 R4
 R5
 R6
-!i122 37
+!i122 5
 R1
-Z39 8C:/Users/TS/Desktop/dlx_processor/execute.vhd
-Z40 FC:/Users/TS/Desktop/dlx_processor/execute.vhd
+Z39 8execute.vhd
+Z40 Fexecute.vhd
 l0
 L7 1
-VNLVbmdPWIX?jnD<^bKII<3
+VKVZcjSW4m]RdJ3bo@Hc>U3
 !s100 j1i_FDaO=MCiE2RH[Hf;93
 R9
 32
-R33
+R10
 !i10b 1
-R34
-Z41 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/execute.vhd|
-Z42 !s107 C:/Users/TS/Desktop/dlx_processor/execute.vhd|
+R11
+Z41 !s90 -reportprogress|300|execute.vhd|
+Z42 !s107 execute.vhd|
 !i113 0
 R14
-R15
 Artl
 R3
 R4
 R5
 R6
-R25
-!i122 37
+R26
+!i122 5
 l61
 L50 277
-V563Bk3fo;QWI?AeC`<L2n1
+V:Tn5KUQKR^877]N5C5bAV0
 !s100 BZL31bHe;HPofNLU;@h]H0
 R9
 32
-R33
+R10
 !i10b 1
-R34
+R11
 R41
 R42
 !i113 0
 R14
-R15
 Efetch
 Z43 w1772531314
 R4
 R5
 R6
-!i122 38
+!i122 3
 R1
-Z44 8C:/Users/TS/Desktop/dlx_processor/fetch.vhd
-Z45 FC:/Users/TS/Desktop/dlx_processor/fetch.vhd
+Z44 8fetch.vhd
+Z45 Ffetch.vhd
 l0
 L5 1
-VG:ABKA^od4;HfL=_NV[NV2
+Vn66:zG5N@oNQJgTnSnbRi1
 !s100 3ReP]9AM5M0eML3c3hMo43
 R9
 32
-Z46 !s110 1773700106
+Z46 !s110 1773700647
 !i10b 1
-R34
-Z47 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/fetch.vhd|
-Z48 !s107 C:/Users/TS/Desktop/dlx_processor/fetch.vhd|
+Z47 !s108 1773700647.000000
+Z48 !s90 -reportprogress|300|fetch.vhd|
+Z49 !s107 fetch.vhd|
 !i113 0
 R14
-R15
 Artl
-R29
-Z49 DEx4 work 4 imem 0 22 [onfW:SbZoKa7KPYlzjXl1
+R31
+Z50 DEx4 work 4 imem 0 22 T7OfP]jnCJ`U3`m4QD;Ki0
 R4
 R5
 R6
-R26
-!i122 38
+R27
+!i122 3
 l26
 L18 46
-VfYkk0dYQ06`Ul3c:mM_UT0
+V3Ao1Y7=TAD4bcBKb99JMk0
 !s100 M:cViTLoVicdZMDznAOYI0
 R9
 32
 R46
 !i10b 1
-R34
 R47
 R48
+R49
 !i113 0
 R14
-R15
 Eimem
-Z50 w1770787672
-R29
+Z51 w1770787672
+R31
 R5
 R6
-!i122 39
+!i122 2
 R1
-Z51 8C:/Users/TS/Desktop/dlx_processor/imem.vhd
-Z52 FC:/Users/TS/Desktop/dlx_processor/imem.vhd
+Z52 8imem.vhd
+Z53 Fimem.vhd
 l0
-R32
-V[onfW:SbZoKa7KPYlzjXl1
+R34
+VT7OfP]jnCJ`U3`m4QD;Ki0
 !s100 QSNImbjVE]hmSW>V4OLA_3
 R9
 32
 R46
 !i10b 1
-Z53 !s108 1773700106.000000
-Z54 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/imem.vhd|
-Z55 !s107 C:/Users/TS/Desktop/dlx_processor/imem.vhd|
+R47
+Z54 !s90 -reportprogress|300|imem.vhd|
+Z55 !s107 imem.vhd|
 !i113 0
 R14
-R15
 Asyn
-R29
+R31
 R5
 R6
-R49
-!i122 39
+R50
+!i122 2
 l57
 L53 33
-V78JejNE25lJEQ;bTz1eIe3
+VJWAh9>kP[82^[;ECfmiGz2
 !s100 [<B5z^40c02WL5GRcnkc60
 R9
 32
 R46
 !i10b 1
-R53
+R47
 R54
 R55
 !i113 0
 R14
-R15
 Ememory
 Z56 w1771748852
 R3
 R4
 R5
 R6
-!i122 40
+!i122 7
 R1
-Z57 8C:/Users/TS/Desktop/dlx_processor/memory.vhd
-Z58 FC:/Users/TS/Desktop/dlx_processor/memory.vhd
+Z57 8memory.vhd
+Z58 Fmemory.vhd
 l0
 L7 1
-VK@dYIE6Va]4P<B3R8CIKS3
+VRI7[7X@R2AUZRJLKDFZS30
 !s100 W@H_SKloi[7EPEaeEdI8K3
 R9
 32
-R46
+R10
 !i10b 1
-R53
-Z59 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/memory.vhd|
-Z60 !s107 C:/Users/TS/Desktop/dlx_processor/memory.vhd|
+R11
+Z59 !s90 -reportprogress|300|memory.vhd|
+Z60 !s107 memory.vhd|
 !i113 0
 R14
-R15
 Artl
-R29
+R31
 R37
 R3
 R4
 R5
 R6
-R24
-!i122 40
+R25
+!i122 7
 l35
 L29 49
-VG<nb^hgHibcFVhQ8=3aC43
+VK4QI2AF<Z>YKzNR4?JfRL2
 !s100 keoL2_N@j:egE=h]gRk121
 R9
 32
-R46
+R20
 !i10b 1
-R53
+R11
 R59
 R60
 !i113 0
 R14
-R15
 Eregfile
 Z61 w1771189451
 R4
 R5
 R6
-!i122 41
+!i122 1
 R1
-Z62 8C:/Users/TS/Desktop/dlx_processor/regfile.vhd
-Z63 FC:/Users/TS/Desktop/dlx_processor/regfile.vhd
+Z62 8regfile.vhd
+Z63 Fregfile.vhd
 l0
 L5 1
-Vh94;kU5U7i?V9=RLZAN3=1
+V3BB[mb_@`6GK]kW@5RKiR3
 !s100 TK9RPSF]K]bYInJ<ilmcA2
 R9
 32
-Z64 !s110 1773700107
+R46
 !i10b 1
-Z65 !s108 1773700107.000000
-Z66 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
-Z67 !s107 C:/Users/TS/Desktop/dlx_processor/regfile.vhd|
+R29
+Z64 !s90 -reportprogress|300|regfile.vhd|
+Z65 !s107 regfile.vhd|
 !i113 0
 R14
-R15
 Artl
 R4
 R5
 R6
-R16
-!i122 41
+R15
+!i122 1
 l21
 L18 20
-VHP9E4UYQP[G=HD3Mm88UU2
+VlXiiRaT_0GGl^EI6h_RU31
 !s100 h8BM99L9JmCHWI>1MObb40
 R9
 32
-R64
+R46
 !i10b 1
+R29
+R64
 R65
-R66
-R67
 !i113 0
 R14
-R15
 Etb_dlx
-Z68 w1771714554
+Z66 w1771714554
 R4
 R5
 R6
-!i122 43
+!i122 10
 R1
-Z69 8C:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd
-Z70 FC:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd
+Z67 8tb_dlx.vhd
+Z68 Ftb_dlx.vhd
 l0
 L5 1
-VbfZNkWLH:TjZ1<`W5E?8J0
+ValY?o9NQMe:2cXCD2Onl:3
 !s100 1gMdz08?W@P5G5eA;34>K1
 R9
 32
-Z71 !s110 1773700108
+R20
 !i10b 1
-Z72 !s108 1773700108.000000
-Z73 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd|
-Z74 !s107 C:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd|
+R21
+Z69 !s90 -reportprogress|300|tb_dlx.vhd|
+Z70 !s107 tb_dlx.vhd|
 !i113 0
 R14
-R15
 Asim
 R3
-R27
+R28
 R4
 R5
 R6
-Z75 DEx4 work 6 tb_dlx 0 22 bfZNkWLH:TjZ1<`W5E?8J0
-!i122 43
+DEx4 work 6 tb_dlx 0 22 alY?o9NQMe:2cXCD2Onl:3
+!i122 10
 l16
-Z76 L8 37
-Z77 VDUaFjYeSei:@:TM_8nlPO0
-Z78 !s100 ?_HMkdWG8=Afj@CL9_?cA1
+L8 37
+VB7Y@^o>XhAC;4Az2mKbZe3
+!s100 ?_HMkdWG8=Afj@CL9_?cA1
 R9
 32
-R71
+R20
 !i10b 1
-R72
-R73
-R74
+R21
+R69
+R70
 !i113 0
 R14
-R15
 Ewriteback
-Z79 w1771658082
+Z71 w1771658082
 R3
 R4
 R5
 R6
-!i122 42
+!i122 8
 R1
-Z80 8C:/Users/TS/Desktop/dlx_processor/writeBack.vhd
-Z81 FC:/Users/TS/Desktop/dlx_processor/writeBack.vhd
+Z72 8writeBack.vhd
+Z73 FwriteBack.vhd
 l0
 L7 1
-Vh<ERM9i@[<4L@B8U:0Lh82
+V1ISOfcDFKD;G9ZEaaehZD2
 !s100 >:h]1]DEl>`kL43OXe0hQ2
 R9
 32
-R64
+R20
 !i10b 1
-R65
-Z82 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/TS/Desktop/dlx_processor/writeBack.vhd|
-Z83 !s107 C:/Users/TS/Desktop/dlx_processor/writeBack.vhd|
+R21
+Z74 !s90 -reportprogress|300|writeBack.vhd|
+Z75 !s107 writeBack.vhd|
 !i113 0
 R14
-R15
 Artl
 R3
 R4
 R5
 R6
-R23
-!i122 42
+R24
+!i122 8
 l30
 L25 28
-VWgce<=nHVcR[HJhoS`4`j3
+VP0Fnhfomdhhz:>D^VdnTV2
 !s100 mV_bLG<2W<8A01b?G]9@D2
 R9
 32
-R64
+R20
 !i10b 1
-R65
-R82
-R83
+R21
+R74
+R75
 !i113 0
 R14
-R15
