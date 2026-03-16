@@ -82,9 +82,9 @@ package dlx_pkg is
   ------------------------------------------------------------------
   -- UART
   ------------------------------------------------------------------
-  constant OPCODE_PCH  : std_logic_vector(5 downto 0) := "110001"; -- 0x31
-  constant OPCODE_PD   : std_logic_vector(5 downto 0) := "110010"; -- 0x32
-  constant OPCODE_PDU  : std_logic_vector(5 downto 0) := "110011"; -- 0x33
+  constant OP_PCH  : std_logic_vector(5 downto 0) := "110001"; -- 0x31
+  constant OP_PD   : std_logic_vector(5 downto 0) := "110010"; -- 0x32
+  constant OP_PDU  : std_logic_vector(5 downto 0) := "110011"; -- 0x33
 
   ------------------------------------------------------------------
   -- ALU operation encodings (internal)
