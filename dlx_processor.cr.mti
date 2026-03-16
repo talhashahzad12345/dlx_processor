@@ -1,1 +1,115 @@
+C:/Users/TS/Desktop/dlx_processor/regfile.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/regfile.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity regfile
+-- Compiling architecture rtl of regfile
 
+} {} {}} C:/Users/TS/Desktop/dlx_processor/fetch.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/fetch.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity fetch
+-- Compiling architecture rtl of fetch
+-- Loading package altera_mf_components
+-- Loading entity imem
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/execute.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/execute.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package dlx_pkg
+-- Compiling entity execute
+-- Compiling architecture rtl of execute
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/dmem.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/dmem.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package altera_mf_components
+-- Compiling entity dmem
+-- Compiling architecture SYN of dmem
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/writeBack.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/writeBack.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package dlx_pkg
+-- Compiling entity writeback
+-- Compiling architecture rtl of writeback
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/imem.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/imem.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package altera_mf_components
+-- Compiling entity imem
+-- Compiling architecture SYN of imem
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/dlx.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/dlx.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package dlx_pkg
+-- Compiling entity dlx
+-- Compiling architecture rtl of dlx
+-- Loading entity fetch
+-- Loading entity decode
+-- Loading entity execute
+-- Loading entity memory
+-- Loading entity writeback
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/decode.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/decode.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package dlx_pkg
+-- Compiling entity decode
+-- Compiling architecture rtl of decode
+-- Loading entity regfile
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/tb_dlx.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity tb_dlx
+-- Compiling architecture sim of tb_dlx
+-- Loading package dlx_pkg
+-- Loading entity dlx
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/memory.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/memory.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package dlx_pkg
+-- Compiling entity memory
+-- Compiling architecture rtl of memory
+-- Loading package altera_mf_components
+-- Loading entity dmem
+
+} {} {}} C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/TS/Desktop/dlx_processor/dlx_pkg.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2024.3 Compiler 2024.09 Sep 10 2024
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling package dlx_pkg
+
+} {} {}}
