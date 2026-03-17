@@ -12,6 +12,7 @@ vcom execute.vhd
 vcom dmem.vhd
 vcom memory.vhd
 vcom writeBack.vhd
+vcom fifo.vhd
 vcom dlx.vhd
 vcom tb_dlx.vhd
 
