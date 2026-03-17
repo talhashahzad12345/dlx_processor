@@ -19,9 +19,7 @@ architecture rtl of UART is
 
 signal uart_clk : std_logic;
 signal rx_data  : std_logic_vector(7 downto 0);
-
 signal rx_done  : std_logic;
-signal tx_start : std_logic;
 
 signal tx_busy  : std_logic := '0';
 signal tx_start : std_logic;
