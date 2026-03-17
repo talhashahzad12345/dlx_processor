@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::vector<std::string> dataLines, textLines;
+    std::vector<std::string> dataLines, textLines, constLines;
     Section section = Section::NONE;
     std::string line;
 
@@ -98,14 +98,16 @@ int main(int argc, char* argv[]) {
         auto c = line.find(';');
         if (c != std::string::npos) line = line.substr(0, c);
 
-        if (line.find(".data") != std::string::npos) { section = Section::DATA; continue; }
-        if (line.find(".text") != std::string::npos) { section = Section::TEXT; continue; }
+        if (line.find(".data")  != std::string::npos) { section = Section::DATA; continue; }
+        if (line.find(".text")  != std::string::npos) { section = Section::TEXT; continue; }
+        if (line.find(".const") != std::string::npos) { section = Section::CONST; continue; }
 
         if (line.find_first_not_of(" \t\r\n") == std::string::npos)
             continue;
 
         if (section == Section::DATA) dataLines.push_back(line);
         if (section == Section::TEXT) textLines.push_back(line);
+        if (section == Section::CONST) constLines.push_back(line);
     }
 
     /* ---------- DATA SYMBOLS ---------- */
@@ -125,6 +127,55 @@ int main(int argc, char* argv[]) {
             ss >> v;
             dataMem.push_back(v);
             dataAddr++;
+        }
+    }
+    
+    /* ---------- CONST SYMBOLS ---------- */
+    std::unordered_map<std::string, uint32_t> constSymbols;
+    std::vector<uint32_t> constMem;
+    uint32_t constAddr = 0;
+
+    for (auto& l : constLines) {
+        std::stringstream ss(l);
+
+        std::string name;
+        int length;
+
+        ss >> name >> length;
+
+        // IMPORTANT: offset AFTER data
+        constSymbols[name] = dataMem.size() + constAddr;
+
+        std::string rest;
+        std::getline(ss, rest);
+
+        // extract string between quotes
+        auto first = rest.find('"');
+        auto last = rest.rfind('"');
+
+        if (first == std::string::npos || last == std::string::npos || last <= first)
+            asmError("Invalid string in .const");
+
+        std::string str = rest.substr(first + 1, last - first - 1);
+
+        // store length first
+        constMem.push_back(str.size());
+        constAddr++;
+
+        // store characters
+        for (size_t i = 0; i < str.size(); i++) {
+            if (str[i] == '\\' && i + 1 < str.size()) {
+                if (str[i + 1] == 'n') {
+                    constMem.push_back(10); // newline
+                    i++;
+                } else {
+                    constMem.push_back((uint32_t)str[i + 1]);
+                    i++;
+                }
+            } else {
+                constMem.push_back((uint32_t)str[i]);
+            }
+            constAddr++;
         }
     }
 
@@ -193,32 +244,59 @@ int main(int argc, char* argv[]) {
                 op == "SGEI" || op == "SGEUI" ||
                 op == "SEQI" || op == "SNEI") {
             std::string rd, rs1;
+            std::string immStr;
+            ss >> rd >> rs1 >> immStr;
             int imm;
-            ss >> rd >> rs1 >> imm;
+            if (dataSymbols.count(immStr)) imm = dataSymbols.at(immStr);
+            else if (constSymbols.count(immStr)) imm = constSymbols.at(immStr);
+            else if (labels.count(immStr)) imm = labels.at(immStr);
+            else imm = std::stoi(immStr);
             inst = encodeI(opcode, regNum(rd), regNum(rs1), imm);
         }
         else if (op == "LW") {
-            std::string rd, sym, base;
-            ss >> rd >> sym >> base;
-            if (!dataSymbols.count(sym)) {
-                asmError("Undefined data symbol: " + sym);
+            std::string rd, offsetStr, base;
+            ss >> rd >> offsetStr >> base;
+
+            int offset;
+
+            // check if number
+            if (isdigit(offsetStr[0]) || (offsetStr[0] == '-' && isdigit(offsetStr[1]))) {
+                offset = std::stoi(offsetStr);
+            }
+            else if (dataSymbols.count(offsetStr)) {
+                offset = dataSymbols.at(offsetStr);
+            }
+            else if (constSymbols.count(offsetStr)) {
+                offset = constSymbols.at(offsetStr);
+            }
+            else {
+                asmError("Undefined symbol: " + offsetStr);
             }
 
-            inst = encodeI(opcode, regNum(rd), regNum(base), dataSymbols.at(sym));
-
-            // inst = encodeI(opcode, regNum(rd), regNum(base), dataSymbols[sym]);
+            inst = encodeI(opcode, regNum(rd), regNum(base), offset);
         }
         else if (op == "SW") {
-            std::string sym, base, rs;
-            ss >> sym >> base >> rs;
+            std::string offsetStr, base, rs;
+            ss >> offsetStr >> base >> rs;
 
-            if (!dataSymbols.count(sym))
-                asmError("Undefined data symbol: " + sym);
+            int offset;
 
-            inst = encodeI(opcode, regNum(rs), regNum(base), dataSymbols.at(sym));
-            // inst = encodeI(opcode, regNum(rs), regNum(base), dataSymbols[sym]);
+            if (isdigit(offsetStr[0]) || (offsetStr[0] == '-' && isdigit(offsetStr[1]))) {
+                offset = std::stoi(offsetStr);
+            }
+            else if (dataSymbols.count(offsetStr)) {
+                offset = dataSymbols.at(offsetStr);
+            }
+            else if (constSymbols.count(offsetStr)) {
+                offset = constSymbols.at(offsetStr);
+            }
+            else {
+                asmError("Undefined symbol: " + offsetStr);
+            }
+
+            inst = encodeI(opcode, regNum(rs), regNum(base), offset);
         }
-        else if (op == "BEQZ" || op == "BNEZ") {
+                else if (op == "BEQZ" || op == "BNEZ") {
             std::string rs, lbl;
             ss >> rs >> lbl;
             if (!labels.count(lbl))
@@ -270,7 +348,10 @@ int main(int argc, char* argv[]) {
         out << "END;\n";
     };
 
-    writeMIF(argv[2], dataMem);
+    std::vector<uint32_t> fullData = dataMem;
+    fullData.insert(fullData.end(), constMem.begin(), constMem.end());
+
+    writeMIF(argv[2], fullData);
     writeMIF(argv[3], codeMem);
 
     std::cout << "Assembly complete.\n";
