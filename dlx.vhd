@@ -7,7 +7,8 @@ use work.dlx_pkg.all;
 entity dlx is
   port (
     clk : in std_logic;
-    rst : in std_logic
+    rst : in std_logic;
+    TX  : out std_logic
   );
 end entity dlx;
 
@@ -105,16 +106,31 @@ architecture rtl of dlx is
   signal flush_d        : std_logic;
   
   ------------------------------------------------------------------
-  -- PRINT FIFO
+  -- EXEC TO PRINT FIFO
   ------------------------------------------------------------------
   signal fifo1_data_in  : std_logic_vector(PRINT_WIDTH-1 downto 0);
   signal fifo1_data_out : std_logic_vector(PRINT_WIDTH-1 downto 0);
 
   signal fifo1_wr       : std_logic;
-  signal fifo1_rd       : std_logic;
 
   signal fifo1_full     : std_logic;
   signal fifo1_empty    : std_logic;
+
+  ------------------------------------------------------------------
+  -- PRINT TO UART FIFO
+  ------------------------------------------------------------------
+  signal fifo2_data_in  : std_logic_vector(7 downto 0);
+  signal fifo2_data_out : std_logic_vector(7 downto 0);
+
+  signal fifo2_wr       : std_logic;
+  signal fifo2_rd       : std_logic;
+
+  signal fifo2_full     : std_logic;
+  signal fifo2_empty    : std_logic;
+
+  signal pe_fifo_rd : std_logic;
+  
+  signal uart_fifo_rd : std_logic;
 
 begin
 
@@ -295,18 +311,72 @@ begin
   -- PRINT FIFO
   ------------------------------------------------------------------
   fifo1_inst : entity work.fifo
+    generic map(
+      WIDTH => PRINT_WIDTH
+    )
     port map(
       clk => clk,
       rst => rst,
 
       wr_en => fifo1_wr,
-      rd_en => '0',
+      rd_en => pe_fifo_rd,
 
       data_in  => fifo1_data_in,
       data_out => fifo1_data_out,
 
       full  => fifo1_full,
       empty => fifo1_empty
+    );
+
+  ------------------------------------------------------------------
+  -- Print Engine
+  ------------------------------------------------------------------
+  print_engine_inst : entity work.print_engine
+    port map(
+      clk => clk,
+      rst => rst,
+
+      -- INPUT FIFO (fifo1)
+      fifo_in_data  => fifo1_data_out,
+      fifo_in_empty => fifo1_empty,
+      fifo_in_rd    => pe_fifo_rd,
+
+      -- OUTPUT FIFO (fifo2)
+      fifo_out_data => fifo2_data_in,
+      fifo_out_wr   => fifo2_wr,
+      fifo_out_full => fifo2_full
+    );
+  
+  ------------------------------------------------------------------
+  -- UART FIFO
+  ------------------------------------------------------------------
+  fifo2_inst : entity work.fifo
+    generic map(
+      WIDTH => 8
+    )
+    port map(
+      clk => clk,
+      rst => rst,
+
+      wr_en => fifo2_wr,
+      rd_en => uart_fifo_rd,
+
+      data_in  => fifo2_data_in,
+      data_out => fifo2_data_out,
+
+      full  => fifo2_full,
+      empty => fifo2_empty
+    );
+
+  uart_inst : entity work.UART
+    port map(
+      CLOCK_50 => clk,
+      RX       => '1', -- unused
+      TX       => TX,  -- output pin
+
+      fifo_data_in => fifo2_data_out,
+      fifo_empty   => fifo2_empty,
+      fifo_rd      => uart_fifo_rd
     );
 
   ------------------------------------------------------------------
