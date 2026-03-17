@@ -201,8 +201,11 @@ int main(int argc, char* argv[]) {
 
     /* ---------- PASS 2: ENCODE ---------- */
     std::vector<uint32_t> codeMem;
+    std::vector<std::string> codeText;
 
     for (auto l : textLines) {
+        std::string originalLine = l;
+        std::string annotatedLine = originalLine;
         std::replace(l.begin(), l.end(), ',', ' ');
         std::replace(l.begin(), l.end(), '(', ' ');
         std::replace(l.begin(), l.end(), ')', ' ');
@@ -296,14 +299,17 @@ int main(int argc, char* argv[]) {
 
             inst = encodeI(opcode, regNum(rs), regNum(base), offset);
         }
-                else if (op == "BEQZ" || op == "BNEZ") {
+        else if (op == "BEQZ" || op == "BNEZ") {
             std::string rs, lbl;
             ss >> rs >> lbl;
+
             if (!labels.count(lbl))
                 asmError("Undefined label: " + lbl);
 
-            inst = encodeI(opcode, regNum(rs), 0, labels.at(lbl));
-            // inst = encodeI(opcode, regNum(rs), 0, labels[lbl]);
+            uint32_t addr = labels.at(lbl);
+            inst = encodeI(opcode, regNum(rs), 0, addr);
+            
+            annotatedLine += " (addr=" + std::to_string(addr) + ")";
         }
         else if (op == "J" || op == "JAL") {
             std::string lbl;
@@ -311,8 +317,10 @@ int main(int argc, char* argv[]) {
             if (!labels.count(lbl))
                 asmError("Undefined label: " + lbl);
 
-            inst = encodeJ(opcode, labels.at(lbl));
-            // inst = encodeJ(opcode, labels[lbl]);
+            uint32_t addr = labels.at(lbl);
+            inst = encodeJ(opcode, addr);
+
+            annotatedLine += " (addr=" + std::to_string(addr) + ")";
         }
         else if (op == "JALR") {
             std::string rs;
@@ -336,15 +344,28 @@ int main(int argc, char* argv[]) {
         }
 
         codeMem.push_back(inst);
+        codeText.push_back(annotatedLine);
     }
 
     /* ---------- WRITE MIF ---------- */
-    auto writeMIF = [](const char* f, const std::vector<uint32_t>& mem) {
+    auto writeMIF = [](const char* f,
+                    const std::vector<uint32_t>& mem,
+                    const std::vector<std::string>* text = nullptr) {
+
         std::ofstream out(f);
         out << "DEPTH = 1024;\nWIDTH = 32;\nADDRESS_RADIX = HEX;\nDATA_RADIX = HEX;\nCONTENT\nBEGIN\n";
-        for (size_t i = 0; i < mem.size(); i++)
+
+        for (size_t i = 0; i < mem.size(); i++) {
             out << std::setw(3) << std::setfill('0') << std::hex << std::uppercase << i
-                << " : " << std::setw(8) << mem[i] << ";\n";
+                << " : " << std::setw(8) << mem[i] << ";";
+
+            if (text && i < text->size()) {
+                out << " -- " << (*text)[i];
+            }
+
+            out << "\n";
+        }
+
         out << "END;\n";
     };
 
@@ -352,7 +373,7 @@ int main(int argc, char* argv[]) {
     fullData.insert(fullData.end(), constMem.begin(), constMem.end());
 
     writeMIF(argv[2], fullData);
-    writeMIF(argv[3], codeMem);
+    writeMIF(argv[3], codeMem, &codeText);
 
     std::cout << "Assembly complete.\n";
     return 0;
