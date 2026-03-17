@@ -5,58 +5,57 @@ use ieee.numeric_std.all;
 use work.dlx_pkg.all;
 
 entity execute is
-  port (
+	port (
+		clk  				: in std_logic;
+		rst  				: in std_logic;
 
-    clk  				: in std_logic;
-    rst  				: in std_logic;
+		-- From DECODE (ID/EX)
+		regA_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+		regB_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+		imm_in      		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+		rd_in       		: in std_logic_vector(REG_ADDR_W-1 downto 0);
+		pc_in       		: in std_logic_vector(PC_WIDTH-1 downto 0);
 
-    -- From DECODE (ID/EX)
-    regA_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-    regB_in     		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-    imm_in      		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-    rd_in       		: in std_logic_vector(REG_ADDR_W-1 downto 0);
-    pc_in       		: in std_logic_vector(PC_WIDTH-1 downto 0);
+		RegWrite_in 		: in std_logic;
+		ALUSrc_in   		: in std_logic;
+		Branch_in   		: in std_logic;
+		Jump_in     		: in std_logic;
+		ALUOp_in    		: in std_logic_vector(4 downto 0);
+		opcode_in   		: in std_logic_vector(OPCODE_W-1 downto 0);
+		instr_in    		: in std_logic_vector(DATA_WIDTH-1 downto 0);
 
-    RegWrite_in 		: in std_logic;
-    ALUSrc_in   		: in std_logic;
-    Branch_in   		: in std_logic;
-    Jump_in     		: in std_logic;
-    ALUOp_in    		: in std_logic_vector(4 downto 0);
-    opcode_in   		: in std_logic_vector(OPCODE_W-1 downto 0);
-	 instr_in    		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-	 
-	 -- Forwarding
-	 forwardA     		: in std_logic_vector(1 downto 0);
-	 forwardB     		: in std_logic_vector(1 downto 0);
-	 alu_forward  		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-	 wb_forward   		: in std_logic_vector(DATA_WIDTH-1 downto 0);
-	 
-    -- To next stage
-    alu_result_out  	: out std_logic_vector(DATA_WIDTH-1 downto 0);
-    rd_out          	: out std_logic_vector(REG_ADDR_W-1 downto 0);
-    RegWrite_out    	: out std_logic;
-	 regB_out 			: out std_logic_vector(DATA_WIDTH-1 downto 0);
+		-- Forwarding
+		forwardA     		: in std_logic_vector(1 downto 0);
+		forwardB     		: in std_logic_vector(1 downto 0);
+		alu_forward  		: in std_logic_vector(DATA_WIDTH-1 downto 0);
+		wb_forward   		: in std_logic_vector(DATA_WIDTH-1 downto 0);
 
-    pc_src_out       : out std_logic;
-    pc_target_out    : out std_logic_vector(PC_WIDTH-1 downto 0);
-	 instr_out        : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	
-	 rs1_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0);
-	 rs2_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0)
+		-- To next stage
+		alu_result_out  	: out std_logic_vector(DATA_WIDTH-1 downto 0);
+		rd_out          	: out std_logic_vector(REG_ADDR_W-1 downto 0);
+		RegWrite_out    	: out std_logic;
+		regB_out 			: out std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  );
+		pc_src_out       	: out std_logic;
+		pc_target_out    	: out std_logic_vector(PC_WIDTH-1 downto 0);
+		instr_out        	: out std_logic_vector(DATA_WIDTH-1 downto 0);
+
+		rs1_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0);
+		rs2_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0)
+
+	);
 end entity;
 
 architecture rtl of execute is
 
-  signal operandB     : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal alu_res      : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal pc_target    : std_logic_vector(PC_WIDTH-1 downto 0);
-  signal pc_src       : std_logic;
-  
-  -- Forward
-  signal aluA     	 : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal aluB_pre 	 : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal operandB		: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal alu_res		: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pc_target	: std_logic_vector(PC_WIDTH-1 downto 0);
+	signal pc_src		: std_logic;
+
+	-- Forward
+	signal aluA			: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal aluB_pre		: std_logic_vector(DATA_WIDTH-1 downto 0);
   
 begin
 
@@ -75,10 +74,6 @@ begin
 						 regB_in     when others;
 
   operandB <= imm_in when ALUSrc_in = '1' else aluB_pre;
-  ------------------------------------------------------------
-  -- ALU operand mux
-  ------------------------------------------------------------
-  --operandB <= imm_in when ALUSrc_in = '1' else regB_in;
 
   ------------------------------------------------------------
   -- ALU
@@ -284,43 +279,37 @@ begin
 
 		 end if;
 	end process;
-	
-	
 
-
-
-  ------------------------------------------------------------
-  -- Pipeline outputs
-  ------------------------------------------------------------
-  process(clk)
-  begin
-	  if rising_edge(clk) then
-		 if rst = '1' then
-			alu_result_out   <= (others => '0');
-			rd_out           <= (others => '0');
-			RegWrite_out     <= '0';
-			pc_target_out    <= (others => '0');
-			instr_out        <= (others => '0');
-			pc_src_out       <= '0';
-			regB_out 		  <= (others => '0');
-		 else
-			if opcode_in = OP_JAL or opcode_in = OP_JALR then
-			  rd_out         <= std_logic_vector(to_unsigned(31, REG_ADDR_W));
-			  alu_result_out <= std_logic_vector(resize(unsigned(pc_in), DATA_WIDTH));
-			  RegWrite_out   <= '1';
+	------------------------------------------------------------
+	-- Pipeline outputs
+	------------------------------------------------------------
+	process(clk)
+	begin
+		if rising_edge(clk) then
+			if rst = '1' then
+				alu_result_out   	<= (others => '0');
+				rd_out           	<= (others => '0');
+				RegWrite_out     	<= '0';
+				pc_target_out    	<= (others => '0');
+				instr_out        	<= (others => '0');
+				pc_src_out       	<= '0';
+				regB_out 		 	<= (others => '0');
 			else
-			  rd_out         <= rd_in;
-			  alu_result_out <= alu_res;
-			  RegWrite_out   <= RegWrite_in;
+				if opcode_in = OP_JAL or opcode_in = OP_JALR then
+					rd_out        	<= std_logic_vector(to_unsigned(31, REG_ADDR_W));
+					alu_result_out 	<= std_logic_vector(resize(unsigned(pc_in), DATA_WIDTH));
+					RegWrite_out   	<= '1';
+				else
+					rd_out         	<= rd_in;
+					alu_result_out 	<= alu_res;
+					RegWrite_out   	<= RegWrite_in;
+				end if;
+				pc_target_out    	<= pc_target;
+				instr_out        	<= instr_in;
+				pc_src_out       	<= pc_src;
+				regB_out 		 	<= aluB_pre;
 			end if;
-			pc_target_out    <= pc_target;
-			instr_out        <= instr_in;
-			pc_src_out       <= pc_src;
-			regB_out 		  <= aluB_pre;
-		 end if;
-	  end if;
-  end process;
-
-
+		end if;
+	end process;
 
 end architecture;
