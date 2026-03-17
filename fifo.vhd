@@ -5,6 +5,10 @@ use ieee.numeric_std.all;
 use work.dlx_pkg.all;
 
 entity fifo is
+  generic (
+    WIDTH : integer := PRINT_WIDTH;
+    DEPTH : integer := 16
+  );
   port(
     clk       : in std_logic;
     rst       : in std_logic;
@@ -12,8 +16,8 @@ entity fifo is
     wr_en     : in std_logic;
     rd_en     : in std_logic;
 
-    data_in   : in  std_logic_vector(PRINT_WIDTH-1 downto 0);
-    data_out  : out std_logic_vector(PRINT_WIDTH-1 downto 0);
+    data_in   : in  std_logic_vector(WIDTH-1 downto 0);
+    data_out  : out std_logic_vector(WIDTH-1 downto 0);
 
     full      : out std_logic;
     empty     : out std_logic
@@ -22,10 +26,8 @@ end entity;
 
 architecture rtl of fifo is
 
-  constant DEPTH  : integer := 16;
-
   type mem_type is array (0 to DEPTH-1)
-      of std_logic_vector(PRINT_WIDTH-1 downto 0);
+    of std_logic_vector(WIDTH-1 downto 0);
 
   signal mem      : mem_type;
 
