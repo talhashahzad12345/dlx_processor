@@ -6,13 +6,14 @@ package dlx_pkg is
   ------------------------------------------------------------------
   -- Global parameters
   ------------------------------------------------------------------
-  constant DATA_WIDTH : integer := 32;
-  constant REG_COUNT  : integer := 32;
-  constant REG_ADDR_W : integer := 5;
-  constant PC_WIDTH   : integer := 10;
+  constant DATA_WIDTH   : integer := 32;
+  constant REG_COUNT    : integer := 32;
+  constant REG_ADDR_W   : integer := 5;
+  constant PC_WIDTH     : integer := 10;
+  constant PRINT_WIDTH  : integer := DATA_WIDTH + 2;
 
-  constant OPCODE_W   : integer := 6;
-  constant IMM_W      : integer := 16;
+  constant OPCODE_W     : integer := 6;
+  constant IMM_W        : integer := 16;
 
   ------------------------------------------------------------------
   -- DLX Opcodes (6-bit, WIDTH-CORRECT)
