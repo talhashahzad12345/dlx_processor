@@ -11,6 +11,12 @@ vcom dmem.vhd
 vcom memory.vhd
 vcom writeBack.vhd
 vcom fifo.vhd
+vcom div.vhd
+vcom print_engine.vhd
+vcom pll.vhd
+vcom uart_rx.vhd
+vcom uart_tx.vhd
+vcom UART.vhd
 vcom dlx.vhd
 vcom tb_dlx.vhd
 
