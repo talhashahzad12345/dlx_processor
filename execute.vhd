@@ -41,8 +41,10 @@ entity execute is
 		instr_out        	: out std_logic_vector(DATA_WIDTH-1 downto 0);
 
 		rs1_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0);
-		rs2_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0)
+		rs2_in 				: in std_logic_vector(REG_ADDR_W-1 downto 0);
 
+		-- FIFO interface
+		fifo_data_out 		: out std_logic_vector(PRINT_WIDTH-1 downto 0)
 	);
 end entity;
 
@@ -56,6 +58,9 @@ architecture rtl of execute is
 	-- Forward
 	signal aluA			: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal aluB_pre		: std_logic_vector(DATA_WIDTH-1 downto 0);
+
+	-- FIFO
+	signal fifo_packet : std_logic_vector(PRINT_WIDTH-1 downto 0);
   
 begin
 
@@ -75,6 +80,12 @@ begin
 
   operandB <= imm_in when ALUSrc_in = '1' else aluB_pre;
 
+  fifo_packet <=
+    "00" & aluA when opcode_in = OP_PCH else
+    "01" & aluA when opcode_in = OP_PD  else
+    "10" & aluA when opcode_in = OP_PDU else
+    "00" & aluA;
+  
   ------------------------------------------------------------
   -- ALU
   ------------------------------------------------------------
@@ -294,6 +305,7 @@ begin
 				instr_out        	<= (others => '0');
 				pc_src_out       	<= '0';
 				regB_out 		 	<= (others => '0');
+				fifo_data_out 		<= (others => '0');
 			else
 				if opcode_in = OP_JAL or opcode_in = OP_JALR then
 					rd_out        	<= std_logic_vector(to_unsigned(31, REG_ADDR_W));
@@ -308,6 +320,7 @@ begin
 				instr_out        	<= instr_in;
 				pc_src_out       	<= pc_src;
 				regB_out 		 	<= aluB_pre;
+				fifo_data_out 		<= fifo_packet;
 			end if;
 		end if;
 	end process;

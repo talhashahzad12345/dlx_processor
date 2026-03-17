@@ -73,8 +73,8 @@ architecture rtl of dlx is
   signal forwardA   : std_logic_vector(1 downto 0);
   signal forwardB   : std_logic_vector(1 downto 0);
   
-  signal rs1_exec : std_logic_vector(REG_ADDR_W-1 downto 0);
-  signal rs2_exec : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs1_exec   : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal rs2_exec   : std_logic_vector(REG_ADDR_W-1 downto 0);
   
   ------------------------------------------------------------------
   -- STALL
@@ -102,9 +102,29 @@ architecture rtl of dlx is
   signal opcode_d_mux 	: std_logic_vector(OPCODE_W-1 downto 0);
   signal pc_d_mux       : std_logic_vector(PC_WIDTH-1 downto 0);
   
-  signal flush_d : std_logic;
+  signal flush_d        : std_logic;
   
+  ------------------------------------------------------------------
+  -- PRINT FIFO
+  ------------------------------------------------------------------
+  signal fifo1_data_in  : std_logic_vector(PRINT_WIDTH-1 downto 0);
+  signal fifo1_data_out : std_logic_vector(PRINT_WIDTH-1 downto 0);
+
+  signal fifo1_wr       : std_logic;
+  signal fifo1_rd       : std_logic;
+
+  signal fifo1_full     : std_logic;
+  signal fifo1_empty    : std_logic;
+
 begin
+
+  fifo1_wr <= '1' when ((
+        instr_e(31 downto 26) = OP_PCH or
+        instr_e(31 downto 26) = OP_PD  or
+        instr_e(31 downto 26) = OP_PDU
+      )
+      and fifo1_full = '0'
+  ) else '0';
 
   ------------------------------------------------------------------
   -- FLUSH
@@ -168,14 +188,21 @@ begin
 
   is_load_e <= '1' when instr_e(31 downto 26) = OP_LW else '0';
 
-  stall <= '1' when
-	(is_load_e = '1') and
-		(
-			(rd_e = rs1_d) or
-			(rd_e = rs2_d and ALUSrc_d = '0')
-		)
-  else '0';
-
+  stall <= '1' when (
+    (
+      (is_load_e = '1') and (
+        (rd_e = rs1_d) or
+        (rd_e = rs2_d and ALUSrc_d = '0')
+      )
+    )
+    or
+    (
+      (instr_e(31 downto 26) = OP_PCH or
+      instr_e(31 downto 26) = OP_PD  or
+      instr_e(31 downto 26) = OP_PDU)
+      and fifo1_full = '1'
+    )
+  ) else '0';
 
   pc_enable_s <= not stall;
   ------------------------------------------------------------------
@@ -187,7 +214,7 @@ begin
       rst       => rst,
       mux_sel   => pc_src_e,
       jump_addr => pc_target_e,
-		pc_enable => pc_enable_s,
+		  pc_enable => pc_enable_s,
       addr_out  => pc_f,
       instr_out => instr_f
     );
@@ -222,8 +249,8 @@ begin
       opcode_out   => opcode_d,
       instr_out    => instr_d,
 		
-		flush_in     => flush,
-		stall_in		 => stall
+      flush_in     => flush,
+      stall_in		 => stall
     );
 
   ------------------------------------------------------------------
@@ -256,12 +283,30 @@ begin
       pc_target_out  => pc_target_e,
       instr_out      => instr_e,
 		
-		forwardA       => forwardA,
-		forwardB       => forwardB,
-		alu_forward    => alu_e,
-		wb_forward     => alu_m,
-		rs1_in 			=> rs1_exec,
-		rs2_in 			=> rs2_exec
+      forwardA       => forwardA,
+      forwardB       => forwardB,
+      alu_forward    => alu_e,
+      wb_forward     => alu_m,
+      rs1_in 			   => rs1_exec,
+      rs2_in 			   => rs2_exec,
+      fifo_data_out  => fifo1_data_in
+    );
+  ------------------------------------------------------------------
+  -- PRINT FIFO
+  ------------------------------------------------------------------
+  fifo1_inst : entity work.fifo
+    port map(
+      clk => clk,
+      rst => rst,
+
+      wr_en => fifo1_wr,
+      rd_en => '0',
+
+      data_in  => fifo1_data_in,
+      data_out => fifo1_data_out,
+
+      full  => fifo1_full,
+      empty => fifo1_empty
     );
 
   ------------------------------------------------------------------
