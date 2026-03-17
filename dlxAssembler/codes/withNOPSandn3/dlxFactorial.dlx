@@ -1,0 +1,88 @@
+; =====================================
+; Factorial Program (DLX)
+; Uses function call via JAL / JR
+; Computes f = n!
+; =====================================
+
+.data
+n       1   3
+f       1   0
+
+.text
+        LW      R1, n(R0)     ; R1 = n
+        NOP
+        NOP
+        NOP
+        ADDI    R2, R0, 1     ; R2 = f = 1
+        NOP
+        NOP
+        NOP
+        JAL     fact          ; call factorial
+        NOP
+        NOP
+        NOP
+        SW      f(R0), R2     ; store result
+        NOP
+        NOP
+        NOP
+
+done
+        J       done
+        NOP
+        NOP
+        NOP
+
+; -------- factorial function --------
+; R1 = n
+; R2 = f (accumulator)
+fact
+        SLEI    R3, R1, 1     ; if n <= 1
+        NOP
+        NOP
+        NOP
+        BNEZ    R3, fact_ret
+        NOP
+        NOP
+        NOP
+
+        ADDI    R4, R0, 0     ; temp = 0
+        NOP
+        NOP
+        NOP
+        ADDI    R5, R1, 0     ; counter = n
+        NOP
+        NOP
+        NOP
+
+mul_loop
+        ADD     R4, R4, R2   ; temp += f
+        NOP
+        NOP
+        NOP
+        SUBI    R5, R5, 1
+        NOP
+        NOP
+        NOP
+        BNEZ    R5, mul_loop
+        NOP
+        NOP
+        NOP
+
+        ADDI    R2, R4, 0    ; f = temp
+        NOP
+        NOP
+        NOP
+        SUBI    R1, R1, 1    ; n--
+        NOP
+        NOP
+        NOP
+        J       fact
+        NOP
+        NOP
+        NOP
+
+fact_ret
+        JR      R31
+        NOP
+        NOP
+        NOP
