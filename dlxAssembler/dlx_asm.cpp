@@ -205,6 +205,18 @@ int main(int argc, char* argv[]) {
 
     for (auto l : textLines) {
         std::string originalLine = l;
+
+        // remove leading spaces
+        originalLine.erase(0, originalLine.find_first_not_of(" \t"));
+
+        // remove inline comments (anything after ;)
+        auto commentPos = originalLine.find(';');
+        if (commentPos != std::string::npos)
+            originalLine = originalLine.substr(0, commentPos);
+
+        // trim again
+        originalLine.erase(originalLine.find_last_not_of(" \t") + 1);
+
         std::string annotatedLine = originalLine;
         std::replace(l.begin(), l.end(), ',', ' ');
         std::replace(l.begin(), l.end(), '(', ' ');
@@ -309,7 +321,9 @@ int main(int argc, char* argv[]) {
             uint32_t addr = labels.at(lbl);
             inst = encodeI(opcode, regNum(rs), 0, addr);
             
-            annotatedLine += " (addr=" + std::to_string(addr) + ")";
+            std::stringstream ssAddr;
+            ssAddr << std::hex << std::uppercase << std::setw(3) << std::setfill('0') << addr;
+            annotatedLine += " -> PC=0x" + ssAddr.str();
         }
         else if (op == "J" || op == "JAL") {
             std::string lbl;
@@ -319,8 +333,10 @@ int main(int argc, char* argv[]) {
 
             uint32_t addr = labels.at(lbl);
             inst = encodeJ(opcode, addr);
-
-            annotatedLine += " (addr=" + std::to_string(addr) + ")";
+            
+            std::stringstream ssAddr;
+            ssAddr << std::hex << std::uppercase << std::setw(3) << std::setfill('0') << addr;
+            annotatedLine += " -> PC=0x" + ssAddr.str();
         }
         else if (op == "JALR") {
             std::string rs;

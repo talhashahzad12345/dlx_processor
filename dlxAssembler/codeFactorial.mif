@@ -4,20 +4,20 @@ ADDRESS_RADIX = HEX;
 DATA_RADIX = HEX;
 CONTENT
 BEGIN
-000 : 04200000; --         LW      R1, n(R0)     
-001 : 10400001; --         ADDI    R2, R0, 1     
-002 : BC000005; --         JAL     fact           (addr=5)
-003 : 08400001; --         SW      f(R0), R2     
-004 : B4000004; --         J       done (addr=4)
-005 : 80610001; --         SLEI    R3, R1, 1     
-006 : B060000F; --         BNEZ    R3, fact_ret (addr=15)
-007 : 10800000; --         ADDI    R4, R0, 0     
-008 : 10A10000; --         ADDI    R5, R1, 0     
-009 : 0C841000; --         ADD     R4, R4, R2   
-00A : 20A50001; --         SUBI    R5, R5, 1
-00B : B0A00009; --         BNEZ    R5, mul_loop (addr=9)
-00C : 10440000; --         ADDI    R2, R4, 0    
-00D : 20210001; --         SUBI    R1, R1, 1    
-00E : B4000005; --         J       fact (addr=5)
-00F : B800001F; --         JR      R31
+000 : 04200000; -- LW      R1, n(R0)
+001 : 10400001; -- ADDI    R2, R0, 1
+002 : BC000005; -- JAL     fact -> PC=0x005
+003 : 08400001; -- SW      f(R0), R2
+004 : B4000004; -- J       done -> PC=0x004
+005 : 80610001; -- SLEI    R3, R1, 1
+006 : B060000F; -- BNEZ    R3, fact_ret -> PC=0x00F
+007 : 10800000; -- ADDI    R4, R0, 0
+008 : 10A10000; -- ADDI    R5, R1, 0
+009 : 0C841000; -- ADD     R4, R4, R2
+00A : 20A50001; -- SUBI    R5, R5, 1
+00B : B0A00009; -- BNEZ    R5, mul_loop -> PC=0x009
+00C : 10440000; -- ADDI    R2, R4, 0
+00D : 20210001; -- SUBI    R1, R1, 1
+00E : B4000005; -- J       fact -> PC=0x005
+00F : B800001F; -- JR      R31
 END;
