@@ -22,15 +22,15 @@ entity print_engine is
 end entity;
 
 architecture rtl of print_engine is
-  
+
   type state_t is (
     IDLE,
+    READ_WAIT,
     READ,
     CHECK_TYPE,
 
     SEND_CHAR,
 
-    HANDLE_SIGN,
     START_DIV,
     WAIT_DIV,
     STORE_DIGIT,
@@ -48,7 +48,7 @@ architecture rtl of print_engine is
   signal pkt_type  : std_logic_vector(1 downto 0);
   signal value_reg : unsigned(31 downto 0);
 
-  -- sign handling
+  -- sign
   signal is_negative : std_logic;
 
   -- divider
@@ -56,8 +56,9 @@ architecture rtl of print_engine is
   signal quotient  : std_logic_vector(31 downto 0);
   signal remainder : std_logic_vector(3 downto 0);
 
-  -- latency tracking (4 cycles)
+  -- divider control
   signal div_valid_shift : std_logic_vector(3 downto 0);
+  signal div_start       : std_logic;
 
   -- digit buffer
   type digit_array is array(0 to 10) of std_logic_vector(7 downto 0);
@@ -65,11 +66,6 @@ architecture rtl of print_engine is
 
   signal digit_count : integer range 0 to 10;
   signal out_index   : integer range 0 to 10;
-
-  -- edge case
-  signal is_int_min : std_logic;
-
-  signal div_start : std_logic;
 
 begin
 
@@ -80,13 +76,13 @@ begin
     port map (
       clock    => clk,
       numer    => numer_reg,
-      denom    => "1010",
+      denom    => "1010", -- divide by 10
       quotient => quotient,
       remain   => remainder
     );
 
   ------------------------------------------------------------
-  -- Divider latency tracker
+  -- Divider latency tracker (FIXED)
   ------------------------------------------------------------
   process(clk)
   begin
@@ -95,7 +91,7 @@ begin
         div_valid_shift <= (others=>'0');
       else
         if div_start = '1' then
-          div_valid_shift <= "0001";  -- start pulse
+          div_valid_shift <= "0001";
         else
           div_valid_shift <= div_valid_shift(2 downto 0) & '0';
         end if;
@@ -113,21 +109,27 @@ begin
         state <= IDLE;
         fifo_in_rd  <= '0';
         fifo_out_wr <= '0';
+        div_start   <= '0';
 
       else
 
         -- defaults
         fifo_in_rd  <= '0';
         fifo_out_wr <= '0';
+        div_start   <= '0';
 
         case state is
 
         --------------------------------------------------
         when IDLE =>
-          if fifo_in_empty = '0' and fifo_out_full = '0' then
+          if fifo_in_empty = '0' then
             fifo_in_rd <= '1';
-            state <= READ;
+            state <= READ_WAIT;
           end if;
+
+        --------------------------------------------------
+        when READ_WAIT =>
+          state <= READ;
 
         --------------------------------------------------
         when READ =>
@@ -143,25 +145,16 @@ begin
             state <= SEND_CHAR;
 
           else
-            -- INT PATH
+            -- INTEGER PATH
             digit_count <= 0;
 
-            -- INT_MIN detection
-            if fifo_in_data(31 downto 0) = x"80000000" then
-              is_int_min <= '1';
+            if pkt_type = "01" and fifo_in_data(31) = '1' then
+              -- signed negative
               is_negative <= '1';
-              value_reg <= to_unsigned(2147483648, 32); -- abs(INT_MIN)
+              value_reg <= unsigned(not fifo_in_data(31 downto 0)) + 1;
             else
-              is_int_min <= '0';
-
-              if pkt_type = "01" and fifo_in_data(31) = '1' then
-                -- negative
-                is_negative <= '1';
-                value_reg <= unsigned(not fifo_in_data(31 downto 0)) + 1;
-              else
-                is_negative <= '0';
-                value_reg <= unsigned(fifo_in_data(31 downto 0));
-              end if;
+              is_negative <= '0';
+              value_reg <= unsigned(fifo_in_data(31 downto 0));
             end if;
 
             state <= START_DIV;
@@ -194,15 +187,19 @@ begin
             to_unsigned(48,8) + unsigned(remainder)
           );
 
-          digit_count <= digit_count + 1;
           value_reg <= unsigned(quotient);
+
+          if unsigned(quotient) = 0 then
+            out_index <= digit_count;
+          else
+            digit_count <= digit_count + 1;
+          end if;
+
           state <= CHECK_DONE;
 
         --------------------------------------------------
         when CHECK_DONE =>
           if unsigned(quotient) = 0 then
-            out_index <= digit_count - 1;
-
             if is_negative = '1' then
               state <= OUTPUT_SIGN;
             else
