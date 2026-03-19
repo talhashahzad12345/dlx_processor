@@ -118,8 +118,68 @@ add wave -noupdate /tb_dlx/dut/decode_inst/rf_inst/wd
 add wave -noupdate /tb_dlx/dut/decode_inst/rf_inst/rd1
 add wave -noupdate /tb_dlx/dut/decode_inst/rf_inst/rd2
 add wave -noupdate -expand /tb_dlx/dut/decode_inst/rf_inst/ram_block
+add wave -noupdate /tb_dlx/dut/fifo1_inst/clk
+add wave -noupdate /tb_dlx/dut/fifo1_inst/rst
+add wave -noupdate /tb_dlx/dut/fifo1_inst/wr_en
+add wave -noupdate /tb_dlx/dut/fifo1_inst/rd_en
+add wave -noupdate /tb_dlx/dut/fifo1_inst/data_in
+add wave -noupdate /tb_dlx/dut/fifo1_inst/data_out
+add wave -noupdate /tb_dlx/dut/fifo1_inst/full
+add wave -noupdate /tb_dlx/dut/fifo1_inst/empty
+add wave -noupdate /tb_dlx/dut/fifo1_inst/mem
+add wave -noupdate /tb_dlx/dut/fifo1_inst/wptr
+add wave -noupdate /tb_dlx/dut/fifo1_inst/rptr
+add wave -noupdate /tb_dlx/dut/fifo1_inst/count
+add wave -noupdate /tb_dlx/dut/fifo1_inst/full_s
+add wave -noupdate /tb_dlx/dut/fifo1_inst/empty_s
+add wave -noupdate /tb_dlx/dut/print_engine_inst/clk
+add wave -noupdate /tb_dlx/dut/print_engine_inst/rst
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_in_data
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_in_empty
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_in_rd
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_out_data
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_out_wr
+add wave -noupdate /tb_dlx/dut/print_engine_inst/fifo_out_full
+add wave -noupdate /tb_dlx/dut/print_engine_inst/state
+add wave -noupdate /tb_dlx/dut/print_engine_inst/pkt_type
+add wave -noupdate /tb_dlx/dut/print_engine_inst/value_reg
+add wave -noupdate /tb_dlx/dut/print_engine_inst/is_negative
+add wave -noupdate /tb_dlx/dut/print_engine_inst/numer_reg
+add wave -noupdate /tb_dlx/dut/print_engine_inst/quotient
+add wave -noupdate /tb_dlx/dut/print_engine_inst/remainder
+add wave -noupdate /tb_dlx/dut/print_engine_inst/div_valid_shift
+add wave -noupdate /tb_dlx/dut/print_engine_inst/div_start
+add wave -noupdate /tb_dlx/dut/print_engine_inst/digits
+add wave -noupdate /tb_dlx/dut/print_engine_inst/digit_count
+add wave -noupdate /tb_dlx/dut/print_engine_inst/out_index
+add wave -noupdate /tb_dlx/dut/fifo2_inst/clk
+add wave -noupdate /tb_dlx/dut/fifo2_inst/rst
+add wave -noupdate /tb_dlx/dut/fifo2_inst/wr_en
+add wave -noupdate /tb_dlx/dut/fifo2_inst/rd_en
+add wave -noupdate /tb_dlx/dut/fifo2_inst/data_in
+add wave -noupdate /tb_dlx/dut/fifo2_inst/data_out
+add wave -noupdate /tb_dlx/dut/fifo2_inst/full
+add wave -noupdate /tb_dlx/dut/fifo2_inst/empty
+add wave -noupdate /tb_dlx/dut/fifo2_inst/mem
+add wave -noupdate /tb_dlx/dut/fifo2_inst/wptr
+add wave -noupdate /tb_dlx/dut/fifo2_inst/rptr
+add wave -noupdate /tb_dlx/dut/fifo2_inst/count
+add wave -noupdate /tb_dlx/dut/fifo2_inst/full_s
+add wave -noupdate /tb_dlx/dut/fifo2_inst/empty_s
+add wave -noupdate /tb_dlx/dut/uart_inst/CLOCK_50
+add wave -noupdate /tb_dlx/dut/uart_inst/RX
+add wave -noupdate /tb_dlx/dut/uart_inst/TX
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_data_in
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_empty
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_rd
+add wave -noupdate /tb_dlx/dut/uart_inst/uart_clk
+add wave -noupdate /tb_dlx/dut/uart_inst/rx_data
+add wave -noupdate /tb_dlx/dut/uart_inst/rx_done
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_busy
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_start
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_data
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {570 ns} 0}
+WaveRestoreCursors {{Cursor 1} {310 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 245
 configure wave -valuecolwidth 100
@@ -135,4 +195,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {379 ns} {689 ns}
+WaveRestoreZoom {0 ns} {310 ns}
