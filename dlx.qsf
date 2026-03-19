@@ -68,6 +68,13 @@ set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name SOURCE_FILE div.cmp
+set_global_assignment -name VHDL_FILE uart_tx.vhd
+set_global_assignment -name VHDL_FILE uart_rx.vhd
+set_global_assignment -name VHDL_FILE UART.vhd
+set_global_assignment -name VHDL_FILE print_engine.vhd
+set_global_assignment -name VHDL_FILE pll.vhd
+set_global_assignment -name VHDL_FILE fifo.vhd
 set_global_assignment -name VHDL_FILE dmem.vhd
 set_global_assignment -name VHDL_FILE tb_dlx.vhd
 set_global_assignment -name VHDL_FILE regfile.vhd
@@ -79,5 +86,8 @@ set_global_assignment -name VHDL_FILE dlx.vhd
 set_global_assignment -name VHDL_FILE execute.vhd
 set_global_assignment -name VHDL_FILE memory.vhd
 set_global_assignment -name VHDL_FILE writeBack.vhd
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name QIP_FILE div.qip
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rst
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to TX
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
