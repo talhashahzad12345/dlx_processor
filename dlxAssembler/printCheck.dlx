@@ -1,0 +1,35 @@
+.data
+
+charVal     1   65
+signedVal   1   -42
+unsignVal   1   42
+
+
+.text
+
+start
+
+LW      R1, charVal(R0)
+PCH     R1
+
+ADDI    R1, R0, 10
+PCH     R1
+
+
+LW      R1, signedVal(R0)
+PD      R1
+
+ADDI    R1, R0, 10
+PCH     R1
+
+
+LW      R1, unsignVal(R0)
+PDU     R1
+
+ADDI    R1, R0, 10
+PCH     R1
+
+
+done
+NOP
+J done
