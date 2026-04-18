@@ -74,7 +74,6 @@ set_global_assignment -name VHDL_FILE uart_rx.vhd
 set_global_assignment -name VHDL_FILE UART.vhd
 set_global_assignment -name VHDL_FILE print_engine.vhd
 set_global_assignment -name VHDL_FILE pll.vhd
-set_global_assignment -name VHDL_FILE fifo.vhd
 set_global_assignment -name VHDL_FILE dmem.vhd
 set_global_assignment -name VHDL_FILE tb_dlx.vhd
 set_global_assignment -name VHDL_FILE regfile.vhd
@@ -87,7 +86,11 @@ set_global_assignment -name VHDL_FILE execute.vhd
 set_global_assignment -name VHDL_FILE memory.vhd
 set_global_assignment -name VHDL_FILE writeBack.vhd
 set_global_assignment -name QIP_FILE div.qip
-set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rst
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to TX
+set_location_assignment PIN_P11 -to clk
+set_location_assignment PIN_B8 -to rst
+set_location_assignment PIN_W5 -to TX
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name QIP_FILE fifo.qip

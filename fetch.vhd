@@ -8,7 +8,7 @@ entity fetch is
         rst         : in  std_logic;
         mux_sel     : in  std_logic; -- 0 = PC+1, 1 = jump
         jump_addr   : in  std_logic_vector(9 downto 0);
-		  pc_enable   : in std_logic;
+		pc_enable   : in std_logic;
 
         addr_out    : out std_logic_vector(9 downto 0); -- PC of instr_out+1
         instr_out   : out std_logic_vector(31 downto 0)
@@ -50,8 +50,8 @@ begin
             if rst = '1' then
                 pc_f <= (others => '0');
             elsif pc_enable = '1' then
-					pc_f <= pc_next;
-				end if;
+                pc_f <= pc_next;
+            end if;
         end if;
     end process;
 
