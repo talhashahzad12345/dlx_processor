@@ -1,0 +1,61 @@
+; UART smoke test for the DLX pipeline.
+; Expected terminal output:
+; B
+; -42
+; 42
+;
+; CR and LF are numeric data values because the assembler only treats
+; "\n" specially in .const strings.
+
+.data
+charVal     1 66
+signedVal   1 -42
+unsignVal   1 42
+cr          1 13
+lf          1 10
+
+.text
+        LW      R1, charVal(R0)
+        NOP
+        NOP
+        PCH     R1
+
+        LW      R1, cr(R0)
+        NOP
+        NOP
+        PCH     R1
+        LW      R1, lf(R0)
+        NOP
+        NOP
+        PCH     R1
+
+        LW      R1, signedVal(R0)
+        NOP
+        NOP
+        PD      R1
+
+        LW      R1, cr(R0)
+        NOP
+        NOP
+        PCH     R1
+        LW      R1, lf(R0)
+        NOP
+        NOP
+        PCH     R1
+
+        LW      R1, unsignVal(R0)
+        NOP
+        NOP
+        PDU     R1
+
+        LW      R1, cr(R0)
+        NOP
+        NOP
+        PCH     R1
+        LW      R1, lf(R0)
+        NOP
+        NOP
+        PCH     R1
+
+done
+        J       done
