@@ -58,8 +58,10 @@ begin
                 addr_hold <= (others => '0');
                 holding <= '0';
             elsif pc_enable = '0' then
-                instr_hold <= imem_q;
-                addr_hold <= pc_f;
+                if holding = '0' then
+                    instr_hold <= imem_q;
+                    addr_hold <= pc_f;
+                end if;
                 holding <= '1';
             elsif pc_enable = '1' then
                 pc_f <= pc_next;
