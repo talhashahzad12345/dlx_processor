@@ -35,6 +35,7 @@ work/
 vsim.wlf
 transcript
 *.wlf
+wlft*
 *.vstf
 
 # Simulation temp
