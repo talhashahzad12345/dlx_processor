@@ -16,7 +16,7 @@ architecture sim of tb_dlx is
   ------------------------------------------------------------------
   -- UART Output
   ------------------------------------------------------------------
-  -- signal TX  : std_logic;
+  signal TX  : std_logic;
 
 begin
 
@@ -26,8 +26,8 @@ begin
   dut : entity work.dlx
     port map (
       clk => clk,
-      rst => rst
-      -- TX  => TX
+      rst => rst,
+      TX  => TX
     );
 
   ------------------------------------------------------------------
@@ -46,7 +46,7 @@ begin
     rst <= '0';
 
     -- Let program run
-    wait for 10000 ns;
+    wait for 6 ms;
 
     -- Stop simulation
     assert false report "Simulation Finished" severity failure;

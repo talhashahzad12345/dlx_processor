@@ -21,9 +21,12 @@ signal uart_clk : std_logic;
 signal rx_data  : std_logic_vector(7 downto 0);
 signal rx_done  : std_logic;
 
-signal tx_busy  : std_logic := '0';
 signal tx_start : std_logic;
 signal tx_data  : std_logic_vector(7 downto 0);
+signal uart_tx_busy : std_logic;
+
+type tx_ctrl_state_t is (IDLE, START_PULSE, WAIT_BUSY, WAIT_DONE);
+signal tx_ctrl_state : tx_ctrl_state_t := IDLE;
 
 begin
 
@@ -50,7 +53,8 @@ port map(
     clk 		=> uart_clk,
     start 	=> tx_start,
     data_in => tx_data,
-    tx 		=> TX
+    tx 		=> TX,
+    busy    => uart_tx_busy
 );
 
 process(uart_clk)
@@ -61,20 +65,28 @@ begin
     fifo_rd  <= '0';
     tx_start <= '0';
 
-    if tx_busy = '0' then
+    case tx_ctrl_state is
+      when IDLE =>
+        if fifo_empty = '0' then
+          fifo_rd <= '1';
+          tx_data <= fifo_data_in;
+          tx_start <= '1';
+          tx_ctrl_state <= START_PULSE;
+        end if;
 
-      if fifo_empty = '0' then
-        -- read from FIFO
-        fifo_rd <= '1';
-        tx_data <= fifo_data_in;
-        tx_start <= '1';
-        tx_busy <= '1';
-      end if;
+      when START_PULSE =>
+        tx_ctrl_state <= WAIT_BUSY;
 
-    else
-      -- wait 1 cycle (tx_start pulse)
-      tx_busy <= '0';
-    end if;
+      when WAIT_BUSY =>
+        if uart_tx_busy = '1' then
+          tx_ctrl_state <= WAIT_DONE;
+        end if;
+
+      when WAIT_DONE =>
+        if uart_tx_busy = '0' then
+          tx_ctrl_state <= IDLE;
+        end if;
+    end case;
 
   end if;
 end process;

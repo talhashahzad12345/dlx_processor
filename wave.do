@@ -198,11 +198,24 @@ add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire0
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire1
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire2
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire3
+add wave -noupdate /tb_dlx/dut/uart_inst/CLOCK_50
+add wave -noupdate /tb_dlx/dut/uart_inst/RX
+add wave -noupdate /tb_dlx/dut/uart_inst/TX
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_data_in
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_empty
+add wave -noupdate /tb_dlx/dut/uart_inst/fifo_rd
+add wave -noupdate /tb_dlx/dut/uart_inst/uart_clk
+add wave -noupdate /tb_dlx/dut/uart_inst/rx_data
+add wave -noupdate /tb_dlx/dut/uart_inst/rx_done
+add wave -noupdate /tb_dlx/dut/uart_inst/uart_tx_busy
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_ctrl_state
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_start
+add wave -noupdate /tb_dlx/dut/uart_inst/tx_data
 add wave -noupdate /tb_dlx/clk
 add wave -noupdate /tb_dlx/rst
 add wave -noupdate /tb_dlx/TX
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {110 ns} 0}
+WaveRestoreCursors {{Cursor 1} {330000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 245
 configure wave -valuecolwidth 100
@@ -218,4 +231,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ns} {176 ns}
+WaveRestoreZoom {242 ns} {418 ns}

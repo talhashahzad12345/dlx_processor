@@ -20,5 +20,5 @@ vcom UART.vhd
 vcom dlx.vhd
 vcom tb_dlx.vhd
 
-vsim -voptargs=+acc work.tb_dlx
+vsim -t ps -voptargs=+acc work.tb_dlx
 do wave.do

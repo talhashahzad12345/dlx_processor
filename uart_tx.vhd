@@ -7,7 +7,8 @@ port(
     clk : in std_logic;
     start : in std_logic;
     data_in : in std_logic_vector(7 downto 0);
-    tx : out std_logic
+    tx : out std_logic;
+    busy : out std_logic
 );
 end uart_tx;
 
@@ -22,6 +23,8 @@ signal counter : integer range 0 to 7 := 0;
 signal shift_reg : std_logic_vector(7 downto 0);
 
 begin
+
+busy <= '0' when state = IDLE else '1';
 
 process(clk)
 begin

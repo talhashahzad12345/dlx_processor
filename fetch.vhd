@@ -73,15 +73,5 @@ begin
     --------------------------------------------------------------------
     addr_out <= addr_hold when holding = '1' else pc_f;
     instr_out <= instr_hold when holding = '1' else imem_q;
-----------------------------------
-    addr_out <= pc_f;
------------
-    addr_out <= pc_f;
------------
-    addr_out <= pc_f;
------------
-    addr_out <= pc_f;
--------------
-    addr_out <= pc_f;
 
 end architecture rtl;

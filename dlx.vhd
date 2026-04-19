@@ -7,8 +7,8 @@ use work.dlx_pkg.all;
 entity dlx is
   port (
     clk : in std_logic;
-    rst : in std_logic
-    -- TX  : out std_logic
+    rst : in std_logic;
+    TX  : out std_logic
   );
 end entity dlx;
 
@@ -121,6 +121,8 @@ architecture rtl of dlx is
   ------------------------------------------------------------------
   signal fifo2_data_in  : std_logic_vector(7 downto 0);
   signal fifo2_data_out : std_logic_vector(7 downto 0);
+  signal fifo2_data_in_word  : std_logic_vector(PRINT_WIDTH-1 downto 0);
+  signal fifo2_data_out_word : std_logic_vector(PRINT_WIDTH-1 downto 0);
 
   signal fifo2_wr       : std_logic;
   signal fifo2_rd       : std_logic;
@@ -131,6 +133,14 @@ architecture rtl of dlx is
   signal pe_fifo_rd : std_logic;
   
   signal uart_fifo_rd : std_logic;
+  signal uart_fifo_rd_sync  : std_logic_vector(2 downto 0);
+  signal uart_fifo_rd_pulse : std_logic;
+  signal uart_fifo_empty    : std_logic;
+  signal uart_data_valid    : std_logic;
+  signal uart_data          : std_logic_vector(7 downto 0);
+
+  type fifo2_read_state_t is (FIFO2_IDLE, FIFO2_WAIT, FIFO2_CAPTURE);
+  signal fifo2_read_state : fifo2_read_state_t;
 
 begin
 
@@ -340,42 +350,82 @@ begin
       fifo_in_rd    => pe_fifo_rd,
 
       -- OUTPUT FIFO (fifo2)
-      fifo_out_data => open,
-      fifo_out_wr   => open,
-      fifo_out_full => '0'
+      fifo_out_data => fifo2_data_in,
+      fifo_out_wr   => fifo2_wr,
+      fifo_out_full => fifo2_full
     );
   
   ------------------------------------------------------------------
   -- UART FIFO
   ------------------------------------------------------------------
-  -- fifo2_inst : entity work.fifo
-  --   generic map(
-  --     WIDTH => 8
-  --   )
-  --   port map(
-  --     clk => clk,
-  --     rst => rst,
+  fifo2_data_in_word(PRINT_WIDTH-1 downto 8) <= (others => '0');
+  fifo2_data_in_word(7 downto 0) <= fifo2_data_in;
+  fifo2_data_out <= fifo2_data_out_word(7 downto 0);
 
-  --     wr_en => fifo2_wr,
-  --     rd_en => uart_fifo_rd,
+  fifo2_inst : entity work.fifo
+    port map(
+      clock => clk,
 
-  --     data_in  => fifo2_data_in,
-  --     data_out => fifo2_data_out,
+      data  => fifo2_data_in_word,
+      wrreq => fifo2_wr,
+      rdreq => fifo2_rd,
 
-  --     full  => fifo2_full,
-  --     empty => fifo2_empty
-  --   );
+      q     => fifo2_data_out_word,
+      full  => fifo2_full,
+      empty => fifo2_empty,
 
-  -- uart_inst : entity work.UART
-  --   port map(
-  --     CLOCK_50 => clk,
-  --     RX       => '1', -- unused
-  --     TX       => TX,  -- output pin
+      usedw => open
+    );
 
-  --     fifo_data_in => fifo2_data_out,
-  --     fifo_empty   => fifo2_empty,
-  --     fifo_rd      => uart_fifo_rd
-  --   );
+  uart_fifo_empty <= not uart_data_valid;
+  uart_fifo_rd_pulse <= uart_fifo_rd_sync(1) and not uart_fifo_rd_sync(2);
+
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        fifo2_rd <= '0';
+        fifo2_read_state <= FIFO2_IDLE;
+        uart_fifo_rd_sync <= (others => '0');
+        uart_data_valid <= '0';
+        uart_data <= (others => '0');
+      else
+        fifo2_rd <= '0';
+        uart_fifo_rd_sync <= uart_fifo_rd_sync(1 downto 0) & uart_fifo_rd;
+
+        case fifo2_read_state is
+          when FIFO2_IDLE =>
+            if uart_fifo_rd_pulse = '1' then
+              uart_data_valid <= '0';
+            end if;
+
+            if (uart_data_valid = '0' or uart_fifo_rd_pulse = '1') and fifo2_empty = '0' then
+              fifo2_rd <= '1';
+              fifo2_read_state <= FIFO2_WAIT;
+            end if;
+
+          when FIFO2_WAIT =>
+            fifo2_read_state <= FIFO2_CAPTURE;
+
+          when FIFO2_CAPTURE =>
+            uart_data <= fifo2_data_out;
+            uart_data_valid <= '1';
+            fifo2_read_state <= FIFO2_IDLE;
+        end case;
+      end if;
+    end if;
+  end process;
+
+  uart_inst : entity work.UART
+    port map(
+      CLOCK_50 => clk,
+      RX       => '1',
+      TX       => TX,
+
+      fifo_data_in => uart_data,
+      fifo_empty   => uart_fifo_empty,
+      fifo_rd      => uart_fifo_rd
+    );
 
   ------------------------------------------------------------------
   -- MEMORY
