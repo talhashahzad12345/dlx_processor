@@ -83,6 +83,15 @@ architecture rtl of dlx is
   signal is_load_e   : std_logic;
   signal stall       : std_logic;
   signal pc_enable_s : std_logic;
+  signal id_opcode   : std_logic_vector(OPCODE_W-1 downto 0);
+  signal id_rd       : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_rs1      : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_rs2      : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_ra2      : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_jump_reg : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_rs1_actual : std_logic_vector(REG_ADDR_W-1 downto 0);
+  signal id_uses_rs2   : std_logic;
+  signal load_use_hazard : std_logic;
   
   ------------------------------------------------------------------
   -- FLUSH
@@ -213,15 +222,46 @@ begin
   -- LOAD-USE HAZARD DETECTION
   ------------------------------------------------------------------
 
-  is_load_e <= '1' when instr_e(31 downto 26) = OP_LW else '0';
+  is_load_e <= '1' when instr_d(31 downto 26) = OP_LW else '0';
+
+  id_opcode   <= instr_f_mux(31 downto 26);
+  id_rd       <= instr_f_mux(25 downto 21);
+  id_rs1      <= instr_f_mux(20 downto 16);
+  id_rs2      <= instr_f_mux(15 downto 11);
+  id_jump_reg <= instr_f_mux(4 downto 0);
+  id_ra2      <= id_rd when id_opcode = OP_SW else id_rs2;
+
+  id_rs1_actual <=
+    id_rd when (id_opcode = OP_BEQZ or id_opcode = OP_BNEZ) else
+    id_jump_reg when (id_opcode = OP_JR or id_opcode = OP_JALR or
+                      id_opcode = OP_PCH or id_opcode = OP_PD or
+                      id_opcode = OP_PDU) else
+    id_rs1;
+
+  id_uses_rs2 <= '1' when (
+    id_opcode = OP_SW   or
+    id_opcode = OP_ADD  or id_opcode = OP_ADDU or
+    id_opcode = OP_SUB  or id_opcode = OP_SUBU or
+    id_opcode = OP_AND  or id_opcode = OP_OR   or
+    id_opcode = OP_XOR  or id_opcode = OP_SLL  or
+    id_opcode = OP_SRL  or id_opcode = OP_SRA  or
+    id_opcode = OP_SLT  or id_opcode = OP_SLTU or
+    id_opcode = OP_SGT  or id_opcode = OP_SGTU or
+    id_opcode = OP_SLE  or id_opcode = OP_SLEU or
+    id_opcode = OP_SGE  or id_opcode = OP_SGEU or
+    id_opcode = OP_SEQ  or id_opcode = OP_SNE
+  ) else '0';
+
+  load_use_hazard <= '1' when (
+    is_load_e = '1' and rd_d /= "00000" and
+    (
+      rd_d = id_rs1_actual or
+      (id_uses_rs2 = '1' and rd_d = id_ra2)
+    )
+  ) else '0';
 
   stall <= '1' when (
-    (
-      (is_load_e = '1') and (
-        (rd_e = rs1_d) or
-        (rd_e = rs2_d and ALUSrc_d = '0')
-      )
-    )
+    load_use_hazard = '1'
     or
     (
       (instr_e(31 downto 26) = OP_PCH or
