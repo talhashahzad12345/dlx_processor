@@ -198,6 +198,9 @@ add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire0
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire1
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire2
 add wave -noupdate /tb_dlx/dut/fifo1_inst/sub_wire3
+add wave -noupdate /tb_dlx/clk
+add wave -noupdate /tb_dlx/rst
+add wave -noupdate /tb_dlx/TX
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {110 ns} 0}
 quietly wave cursor active 1
