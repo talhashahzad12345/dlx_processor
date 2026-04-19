@@ -21,7 +21,12 @@ architecture rtl of fetch is
     signal pc_f     : std_logic_vector(9 downto 0);
 
     -- Next PC
-    signal pc_next  : std_logic_vector(9 downto 0);
+    signal pc_next    : std_logic_vector(9 downto 0); 
+    -- Instruction hold used while fetch is stalled.
+    signal imem_q     : std_logic_vector(31 downto 0);
+    signal instr_hold : std_logic_vector(31 downto 0);
+    signal addr_hold  : std_logic_vector(9 downto 0);
+    signal holding    : std_logic;
 
 begin
 
@@ -38,7 +43,7 @@ begin
         port map (
             address => pc_f,
             clock   => clk,
-            q       => instr_out
+            q       => imem_q
         );
 
     --------------------------------------------------------------------
@@ -49,8 +54,16 @@ begin
         if rising_edge(clk) then
             if rst = '1' then
                 pc_f <= (others => '0');
+                instr_hold <= (others => '0');
+                addr_hold <= (others => '0');
+                holding <= '0';
+            elsif pc_enable = '0' then
+                instr_hold <= imem_q;
+                addr_hold <= pc_f;
+                holding <= '1';
             elsif pc_enable = '1' then
                 pc_f <= pc_next;
+                holding <= '0';
             end if;
         end if;
     end process;
@@ -58,6 +71,17 @@ begin
     --------------------------------------------------------------------
     -- Output PC aligned with instr_out
     --------------------------------------------------------------------
+    addr_out <= addr_hold when holding = '1' else pc_f;
+    instr_out <= instr_hold when holding = '1' else imem_q;
+----------------------------------
+    addr_out <= pc_f;
+-----------
+    addr_out <= pc_f;
+-----------
+    addr_out <= pc_f;
+-----------
+    addr_out <= pc_f;
+-------------
     addr_out <= pc_f;
 
 end architecture rtl;

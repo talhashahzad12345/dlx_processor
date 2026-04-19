@@ -303,7 +303,7 @@ begin
       forwardA       => forwardA,
       forwardB       => forwardB,
       alu_forward    => alu_e,
-      wb_forward     => alu_m,
+      wb_forward     => wb_data,
       rs1_in 			   => rs1_exec,
       rs2_in 			   => rs2_exec,
       fifo_data_out  => fifo1_data_in
