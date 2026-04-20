@@ -48,7 +48,9 @@ const std::unordered_map<std::string, uint8_t> OPCODES = {
     {"JAL",0x2F},{"JALR",0x30},
     {"PCH",0x31},
     {"PD",0x32},
-    {"PDU",0x33}
+    {"PDU",0x33},
+    {"GD",0x34},
+    {"GDU",0x35}
 };
 
 
@@ -357,6 +359,13 @@ int main(int argc, char* argv[]) {
 
             // encode register in 26-bit J-type field
             inst = encodeJ(opcode, regNum(rs));
+        }
+        else if (op == "GD" || op == "GDU") {
+            std::string rd;
+            ss >> rd;
+
+            // encode register in 26-bit J-type field
+            inst = encodeJ(opcode, regNum(rd));
         }
 
         codeMem.push_back(inst);
